@@ -14,3 +14,15 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+// Add User
+Route::post('/add_user', 'UserController@addUser');
+
+// Login User
+Route::post('/login', 'UserController@loginUser');
+
+// List All Users
+Route::get('/list_users', 'UserController@listUsers');
+
+// Add Poll
+Route::post('/add_poll', 'UserController@addPoll');
