@@ -3,7 +3,6 @@
 namespace App;
 
 use DB;
-use App\User;
 use App\Poll;
 use App\PollOpt;
 use Validator;

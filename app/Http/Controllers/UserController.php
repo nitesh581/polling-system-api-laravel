@@ -49,4 +49,17 @@ class UserController extends Controller
         return $poll->listPolls();
     }
     
+    // List a Poll
+    public function listPoll($id)
+    {
+        $poll = new Poll();
+        return $poll->listPoll($id);
+    }
+
+    // Vote Api
+    public function doVote($id, $opt_id)
+    {
+        $poll = new Poll();
+        return $poll->doVote($id, $opt_id);
+    }
 }

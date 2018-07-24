@@ -27,7 +27,11 @@ Route::get('/list_users', 'UserController@listUsers');
 // Add Poll
 Route::post('/add_poll', 'UserController@addPoll');
 
-// List Poll
+// List Polls
 Route::get('/list_polls', 'UserController@listPolls');
 
-Route::get('/test', 'UserController@test');
+// List a Poll
+Route::get('/list_poll/{id}', 'UserController@listPoll');
+
+// Vote Api
+Route::post('/vote/{id}/{opt_id}', 'UserController@doVote');
