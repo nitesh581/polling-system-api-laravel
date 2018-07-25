@@ -6,6 +6,7 @@ use DB;
 use App\Poll;
 use App\PollOpt;
 use Validator;
+use Exception;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -52,8 +53,8 @@ class User extends Authenticatable
         $email = $request->input('email');
         $user_count = DB::table('users')->select('email')->where('email', $email)->count();
 
-        if($user_count > 0){            
-            return response()->json(['error' => 1, 'message' => 'User already exist.']);
+        if($user_count > 0){
+            throw new Exception('User already exist.');
 
         } else {
 
@@ -63,10 +64,9 @@ class User extends Authenticatable
             $data->password = bcrypt($request->input('password'));
             $data->role = $request->input('role');
             $data->save();
-
-            return response()->json(['error' => 0, 'data' => $data]);
-
         }
+
+        return $data;
     }
 
     // Login User
@@ -79,11 +79,12 @@ class User extends Authenticatable
             $user = User::find(auth()->id());
             $user->api_token = $api_token;
             $user->save();
-            return response()->json(['error' => 0, 'data' => $user]);
             
         } else {
-            return response()->json(['error' => 1, 'message' => 'User not exists.']);
+            throw new Exception('User not exists.');
         }
+
+        return $user;
     }
 
     // List All Users
@@ -92,12 +93,12 @@ class User extends Authenticatable
         $users_count = DB::table('users')->count();
         
         if($users_count > 0){
-            $users = DB::table('users')->select('id', 'name', 'email', 'role')->get();
-            return response()->json(['error' => 0, 'data' => $users]);
-
+            $users = DB::table('users')->select('id', 'name', 'email', 'role')->get();            
         } else {
-            return response()->json(['error' => 1, 'message' => 'No Records found.']);
+            throw new Exception('No Records Found.');
         }
+        
+        return $users;                
     }
     
 }

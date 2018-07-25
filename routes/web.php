@@ -34,4 +34,10 @@ Route::get('/list_polls', 'UserController@listPolls');
 Route::get('/list_poll/{id}', 'UserController@listPoll');
 
 // Vote Api
-Route::post('/vote/{id}/{opt_id}', 'UserController@doVote');
+Route::put('/vote/{id}/{opt_id}', 'UserController@doVote');
+
+// Add Poll Option
+Route::post('/add_poll_option/{id}', 'UserController@addOption');
+
+// Delete Poll Option
+Route::delete('/delete_poll_option/{id}/{opt_id}', 'UserController@deleteOption');

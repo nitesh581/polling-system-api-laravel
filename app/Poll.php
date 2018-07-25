@@ -6,6 +6,7 @@ use DB;
 use App\User;
 use App\PollOpt;
 use Validator;
+use Exception;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +19,7 @@ class Poll extends Model
     // Add Poll
     public function addPoll(Request $request)
     {
-        $polls = $request->all();       
+        $polls = $request->all();
         $pollopt_length = count($polls['options']);
 
         $poll = new Poll();
@@ -35,8 +36,13 @@ class Poll extends Model
         
         $poll_title = Poll::find($poll->id);        
         $poll_data = DB::table('poll_opts')->select('options', 'vote')->where('poll_id', $poll->id)->get();
-        
-        return response()->json(['error' => 0, 'data' => ['id' => $poll_title['id'], 'title' => $poll_title['title'], 'options' => $poll_data] ]);
+        $add_poll = array(
+            'id' => $poll_title['id'],
+            'title' => $poll_title['title'],
+            'options' => $poll_data
+        );
+
+        return $add_poll;
     }
 
     // List Polls
@@ -46,7 +52,7 @@ class Poll extends Model
         
         if($polls_count > 0){
             
-            $polls_list = array();       
+            $polls_list = array(); 
             $polls = DB::table('polls')->select('id', 'title')->get();            
             
             for($i = 0; $i < count($polls); $i++){
@@ -59,11 +65,11 @@ class Poll extends Model
                 ];
             }
 
-            return response()->json(['error' => 0, 'data' => $polls_list]);
-
         } else {
-            return response()->json(['error' => 1, 'message' => 'No Records found.']);
+            throw new Exception('No Records Found.');
         }
+
+        return $polls_list;
     }
 
     // List a Poll
@@ -80,20 +86,26 @@ class Poll extends Model
                 $poll_title = $poll[$i]->title;
             }
 
-            return response()->json(['error' => 0, 'data' => ['id' => $poll_id, 'title' => $poll_title, 'options' => $poll_opts] ]);
+            $list_poll = array(
+                'id' => $poll_id,
+                'title' => $poll_title,
+                'options' => $poll_opts
+            );
 
         } else {
-            return response()->json(['error' => 1, 'message' => 'No Records found.']);
+            throw new Exception('No Records Found.');
         }
+
+        return $list_poll;
     }
     
     // Vote Api
     public function doVote($id, $opt_id)
     {
         $vote_poll = DB::table('polls')
-                             ->join('poll_opts', 'polls.id', '=', 'poll_opts.poll_id')
-                             ->select('polls.id', 'poll_opts.id as opt_id', 'title', 'options', 'vote')
-                             ->where('polls.id', $id)->where('poll_opts.id', $opt_id)->get();
+                         ->join('poll_opts', 'polls.id', '=', 'poll_opts.poll_id')
+                         ->select('polls.id', 'poll_opts.id as opt_id', 'title', 'options', 'vote')
+                         ->where('polls.id', $id)->where('poll_opts.id', $opt_id)->get();
 
         if(count($vote_poll) > 0){
                         
@@ -101,17 +113,29 @@ class Poll extends Model
                 $vote = $vote_poll[$i]->vote;
                 $poll_title = $vote_poll[$i]->title;
                 $poll_opt = $vote_poll[$i]->options;
-
             }
             
             $do_vote = PollOpt::find($opt_id);
             $do_vote->vote = $vote + 1;
             $do_vote->save();
 
-            return response()->json(['error' => 0, 'data' => [ 'id' => $id, 'title' => $poll_title, 'option_id' => $opt_id, 'option' => $poll_opt, 'vote' => $do_vote->vote ]]);
+            $poll_vote = array(
+                'id' => $id,
+                'title' => $poll_title,
+                'option_id' => $opt_id,
+                'option' => $poll_opt,
+                'vote' => $do_vote->vote
+            );
+
+            
+
+            // return response()->json(['error' => 0, 'data' => [ 'id' => $id, 'title' => $poll_title, 'option_id' => $opt_id, 'option' => $poll_opt, 'vote' => $do_vote->vote ]]);
 
         } else {
-            return response()->json(['error' => 1, 'message' => 'No Records found.']);
+            // return response()->json(['error' => 1, 'message' => 'No Records found.']);
+            throw new Exception('No Records Found.');
         }
+
+        return $poll_vote;
     }
 }
