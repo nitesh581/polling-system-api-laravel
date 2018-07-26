@@ -16,8 +16,8 @@ class CreatePollOptsTable extends Migration
         Schema::create('poll_opts', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('poll_id');
-            $table->json('options');
-            $table->json('vote');
+            $table->string('options');
+            $table->integer('vote');
             $table->timestamps();
         });
     }

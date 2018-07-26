@@ -8,7 +8,6 @@ use App\Poll;
 use Validator;
 use Exception;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,9 +16,9 @@ class PollOpt extends Model
     protected $table = 'poll_opts';
 
     // Add Poll Option
-    public function addOption($id)
+    public function addOption($id, $data)
     {
-        $validator = Validator::make(request()->all(), [
+        $validator = Validator::make($data, [
             'option' => 'required'
         ]);
 
@@ -32,7 +31,7 @@ class PollOpt extends Model
         if($poll_count > 0) {
             $poll_opt = new PollOpt();
             $poll_opt->poll_id = $id;
-            $poll_opt->options = request()->input('option');
+            $poll_opt->options = $data['option'];
             $poll_opt->save();
             
         } else {

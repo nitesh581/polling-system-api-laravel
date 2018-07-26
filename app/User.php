@@ -7,7 +7,6 @@ use App\Poll;
 use App\PollOpt;
 use Validator;
 use Exception;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Passport\HasApiTokens;
@@ -37,9 +36,9 @@ class User extends Authenticatable
     ];
 
     // Add User
-    public function addUser()
+    public function addUser($data, $default_poll)
     {
-        $validator = Validator::make(request()->all(), [
+        $validator = Validator::make($data, [
             'name' => 'required',
             'email' => 'required|email',
             'password' => 'required',
@@ -50,7 +49,7 @@ class User extends Authenticatable
             return response()->json(['error' => $validator->errors()]);            
         }        
 
-        $email = request()->input('email');
+        $email = $data['email'];
         $user_count = DB::table('users')->select('email')->where('email', $email)->count();
 
         if($user_count > 0){
@@ -58,26 +57,36 @@ class User extends Authenticatable
 
         } else {
 
-            $data = new User();
-            $data->name = request()->input('name');
-            $data->email = $email;
-            $data->password = bcrypt(request()->input('password'));
-            $data->role = request()->input('role');
-            $data->save();
+            $user = new User();
+            $user->name = $data['name'];
+            $user->email = $email;
+            $user->password = bcrypt($data['password']);
+            $user->role = $data['role'];
+            $user->save();
+
+            $poll = new Poll();
+            $poll->user_id = $user->id;
+            $poll->title = $user->name . " Poll";
+            $poll->save();
+
+            for($i = 0; $i < count($default_poll); $i++){
+                $poll_opt = new PollOpt();
+                $poll_opt->poll_id = $poll->id;
+                $poll_opt->options = $default_poll[$i];
+                $poll_opt->vote = 0;
+                $poll_opt->save();
+            }
         }
 
-        return $data;
+        return $user;
     }
 
     // Login User
-    public function loginUser()
+    public function loginUser($data)
     {
-        $credentials = request()->only('email', 'password');
-        $api_token = str_random(60);
-        
-        if(Auth::attempt($credentials)){
+        if(Auth::attempt($data)){
             $user = User::find(auth()->id());
-            $user->api_token = $api_token;
+            $user->api_token = str_random(60);
             $user->save();
             
         } else {

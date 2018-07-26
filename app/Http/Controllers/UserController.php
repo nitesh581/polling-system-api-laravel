@@ -19,8 +19,10 @@ class UserController extends Controller
     public function addUser()
     {
         try {
+            $data = request()->all();
+            $default_poll = array('opt1', 'opt2', 'opt3', 'opt4');
             $user = new User();
-            $response = ['error' => 0, 'data' => $user->addUser()];
+            $response = ['error' => 0, 'data' => $user->addUser($data, $default_poll)];
             
         } catch (Exception $ex) {
             $response = ['error' => 1, 'message' => $ex->getMessage()];
@@ -34,8 +36,9 @@ class UserController extends Controller
     public function loginUser()
     {
         try {
+            $data = request()->only('email', 'password');
             $user = new User();
-            $response = ['error' => 0, 'data' => $user->loginUser()];
+            $response = ['error' => 0, 'data' => $user->loginUser($data)];
 
         } catch (Exception $ex) {
             $response = ['error' => 1, 'message' => $ex->getMessage()];
@@ -59,10 +62,17 @@ class UserController extends Controller
     }
 
     // Add Poll
-    public function addPoll()
+    public function addPoll($user_id)
     {
-        $poll = new Poll();
-        $response = ['error' => 0, 'data' => $poll->addPoll()];
+        try {
+            $data = request()->all();
+            $poll = new Poll();
+            $response = ['error' => 0, 'data' => $poll->addPoll($user_id, $data)];
+
+        } catch (Exception $ex) {
+            $response = ['error' => 1, 'message' => $ex->getMessage()];
+        }
+        
         return response()->json($response);
     }
 
@@ -112,8 +122,9 @@ class UserController extends Controller
     public function addOption($id)
     {
         try {
+            $data = request()->all();
             $pollOption = new PollOpt();
-            $response = ['error' => 0, 'data' => $pollOption->addOption($id)];
+            $response = ['error' => 0, 'data' => $pollOption->addOption($id, $data)];
 
         } catch (Exception $ex) {
             $response = ['error' => 1, 'message' => $ex->getMessage()];
@@ -140,8 +151,9 @@ class UserController extends Controller
     public function updatePollTitle($id)
     {
         try {
+            $data = request()->all();
             $poll = new Poll();
-            $response = ['error' => 0, 'data' => $poll->updatePollTitle($id)];
+            $response = ['error' => 0, 'data' => $poll->updatePollTitle($id, $data)];
 
         } catch (Exception $ex) {
             $response = ['error' => 1, 'message' => $ex->getMessage()];

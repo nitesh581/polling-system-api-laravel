@@ -8,7 +8,6 @@ use App\PollOpt;
 use Validator;
 use Exception;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,30 +16,46 @@ class Poll extends Model
     protected $table = 'polls';
 
     // Add Poll
-    public function addPoll()
+    public function addPoll($user_id, $data)
     {
-        $polls = request()->all();
-        $pollopt_length = count($polls['options']);
+        $user_exist = DB::table('users')->where('id', $user_id)->count();
 
-        $poll = new Poll();
-        $poll->title = $polls['title'];
-        $poll->save();
+        if($user_exist > 0){
 
-        for($i = 0; $i < $pollopt_length; $i++){
-            $poll_opt = new PollOpt();
-            $poll_opt->poll_id = $poll->id;
-            $poll_opt->options = $polls['options'][$i]['option'];
-            $poll_opt->vote = $polls['options'][$i]['vote'];
-            $poll_opt->save();
+            $poll_exist = DB::table('polls')->where('user_id', $user_id)->count();
+
+            if($poll_exist > 0){
+                throw new Exception('Poll Already Exist.');
+                
+            } else {
+    
+                $pollopt_length = count($data['options']);
+                
+                $poll = new Poll();
+                $poll->user_id = $user_id;
+                $poll->title = $data['title'];
+                $poll->save();
+    
+                for($i = 0; $i < $pollopt_length; $i++){
+                    $poll_opt = new PollOpt();
+                    $poll_opt->poll_id = $poll->id;
+                    $poll_opt->options = $data['options'][$i]['option'];
+                    $poll_opt->vote = $data['options'][$i]['vote'];
+                    $poll_opt->save();
+                }
+                
+                $poll_title = Poll::find($poll->id);        
+                $poll_data = DB::table('poll_opts')->select('options', 'vote')->where('poll_id', $poll->id)->get();
+                $add_poll = array(
+                    'id' => $poll_title['id'],
+                    'title' => $poll_title['title'],
+                    'options' => $poll_data
+                );
+            }
+
+        } else {
+            throw new Exception('User Not Found.');
         }
-        
-        $poll_title = Poll::find($poll->id);        
-        $poll_data = DB::table('poll_opts')->select('options', 'vote')->where('poll_id', $poll->id)->get();
-        $add_poll = array(
-            'id' => $poll_title['id'],
-            'title' => $poll_title['title'],
-            'options' => $poll_data
-        );
 
         return $add_poll;
     }
@@ -135,13 +150,13 @@ class Poll extends Model
     }
 
     // Update Poll Title
-    public function updatePollTitle($id)
+    public function updatePollTitle($id, $data)
     {
         $poll = DB::table('polls')->where('id', $id)->count();
 
         if($poll > 0) {
             $poll_title = Poll::find($id);
-            $poll_title->title = request()->input('title');
+            $poll_title->title = $data['title'];
             
             $poll_title->save();
         } else {
