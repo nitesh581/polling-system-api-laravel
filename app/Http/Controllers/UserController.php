@@ -23,6 +23,9 @@ class UserController extends Controller
             $user = new User();
             $response = ['error' => 0, 'data' => $user->addUser($data)];
             
+            $poll = new Poll();
+            $poll->addDefaultPoll($response['data']['id']);
+            
         } catch (Exception $ex) {
             $response = ['error' => 1, 'message' => $ex->getMessage()];
         }

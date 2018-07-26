@@ -184,7 +184,7 @@ class Poll extends Model
     }
 
     // Default Poll
-    public function defaultPoll()
+    public function addDefaultPoll($user_id)
     {
         $default = array(
             'title' => 'Default Poll',
@@ -208,6 +208,9 @@ class Poll extends Model
             ]
         );
 
-        return $default;
+        $poll = new Poll();
+        $poll->addPoll($user_id, $default);
+
+        return $poll;
     }
 }

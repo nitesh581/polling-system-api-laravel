@@ -63,9 +63,6 @@ class User extends Authenticatable
             $user->password = bcrypt($data['password']);
             $user->role = $data['role'];
             $user->save();
-
-            $poll = new Poll();
-            $poll->addPoll($user->id, $poll->defaultPoll());
             
         }
 
