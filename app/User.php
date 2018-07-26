@@ -65,17 +65,8 @@ class User extends Authenticatable
             $user->save();
 
             $poll = new Poll();
-            $poll->user_id = $user->id;
-            $poll->title = $user->name . " Poll";
-            $poll->save();
-
-            for($i = 0; $i < count($default_poll); $i++){
-                $poll_opt = new PollOpt();
-                $poll_opt->poll_id = $poll->id;
-                $poll_opt->options = $default_poll[$i];
-                $poll_opt->vote = 0;
-                $poll_opt->save();
-            }
+            $poll->addPoll($user->id, $default_poll);
+            
         }
 
         return $user;
