@@ -20,30 +20,8 @@ class UserController extends Controller
     {
         try {
             $data = request()->all();
-            $default_poll = array(
-                'title' => 'Default Poll',
-                'options' => [
-                    [
-                        'option' => 'opt1',
-                        'vote' => 0
-                    ],
-                    [
-                        'option' => 'opt2',
-                        'vote' => 0
-                    ],
-                    [
-                        'option' => 'opt3',
-                        'vote' => 0
-                    ],
-                    [
-                        'option' => 'opt4',
-                        'vote' => 0
-                    ],
-                ]
-            );
-
             $user = new User();
-            $response = ['error' => 0, 'data' => $user->addUser($data, $default_poll)];
+            $response = ['error' => 0, 'data' => $user->addUser($data)];
             
         } catch (Exception $ex) {
             $response = ['error' => 1, 'message' => $ex->getMessage()];

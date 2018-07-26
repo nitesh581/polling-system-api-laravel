@@ -182,4 +182,32 @@ class Poll extends Model
 
         return $deleted;
     }
+
+    // Default Poll
+    public function defaultPoll()
+    {
+        $default = array(
+            'title' => 'Default Poll',
+            'options' => [
+                [
+                    'option' => 'opt1',
+                    'vote' => 0
+                ],
+                [
+                    'option' => 'opt2',
+                    'vote' => 0
+                ],
+                [
+                    'option' => 'opt3',
+                    'vote' => 0
+                ],
+                [
+                    'option' => 'opt4',
+                    'vote' => 0
+                ],
+            ]
+        );
+
+        return $default;
+    }
 }

@@ -36,7 +36,7 @@ class User extends Authenticatable
     ];
 
     // Add User
-    public function addUser($data, $default_poll)
+    public function addUser($data)
     {
         $validator = Validator::make($data, [
             'name' => 'required',
@@ -65,7 +65,7 @@ class User extends Authenticatable
             $user->save();
 
             $poll = new Poll();
-            $poll->addPoll($user->id, $default_poll);
+            $poll->addPoll($user->id, $poll->defaultPoll());
             
         }
 
