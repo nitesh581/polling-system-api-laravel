@@ -37,9 +37,9 @@ class User extends Authenticatable
     ];
 
     // Add User
-    public function addUser(Request $request)
+    public function addUser()
     {
-        $validator = Validator::make($request->all(), [
+        $validator = Validator::make(request()->all(), [
             'name' => 'required',
             'email' => 'required|email',
             'password' => 'required',
@@ -50,7 +50,7 @@ class User extends Authenticatable
             return response()->json(['error' => $validator->errors()]);            
         }        
 
-        $email = $request->input('email');
+        $email = request()->input('email');
         $user_count = DB::table('users')->select('email')->where('email', $email)->count();
 
         if($user_count > 0){
@@ -59,10 +59,10 @@ class User extends Authenticatable
         } else {
 
             $data = new User();
-            $data->name = $request->input('name');
+            $data->name = request()->input('name');
             $data->email = $email;
-            $data->password = bcrypt($request->input('password'));
-            $data->role = $request->input('role');
+            $data->password = bcrypt(request()->input('password'));
+            $data->role = request()->input('role');
             $data->save();
         }
 
@@ -70,9 +70,9 @@ class User extends Authenticatable
     }
 
     // Login User
-    public function loginUser(Request $request)
+    public function loginUser()
     {
-        $credentials = $request->only('email', 'password');
+        $credentials = request()->only('email', 'password');
         $api_token = str_random(60);
         
         if(Auth::attempt($credentials)){

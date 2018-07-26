@@ -16,11 +16,11 @@ use Illuminate\Support\Facades\Auth;
 class UserController extends Controller
 {   
     // Add User
-    public function addUser(Request $request)
+    public function addUser()
     {
         try {
             $user = new User();
-            $response = ['error' => 0, 'data' => $user->addUser($request)];
+            $response = ['error' => 0, 'data' => $user->addUser()];
             
         } catch (Exception $ex) {
             $response = ['error' => 1, 'message' => $ex->getMessage()];
@@ -31,11 +31,11 @@ class UserController extends Controller
     }
 
     // Login User
-    public function loginUser(Request $request)
+    public function loginUser()
     {
         try {
             $user = new User();
-            $response = ['error' => 0, 'data' => $user->loginUser($request)];
+            $response = ['error' => 0, 'data' => $user->loginUser()];
 
         } catch (Exception $ex) {
             $response = ['error' => 1, 'message' => $ex->getMessage()];
@@ -59,10 +59,10 @@ class UserController extends Controller
     }
 
     // Add Poll
-    public function addPoll(Request $request)
+    public function addPoll()
     {
         $poll = new Poll();
-        $response = ['error' => 0, 'data' => $poll->addPoll($request)];
+        $response = ['error' => 0, 'data' => $poll->addPoll()];
         return response()->json($response);
     }
 
@@ -109,11 +109,11 @@ class UserController extends Controller
     }
 
     // Add Poll Option
-    public function addOption(Request $request, $id)
+    public function addOption($id)
     {
         try {
             $pollOption = new PollOpt();
-            $response = ['error' => 0, 'data' => $pollOption->addOption($request, $id)];
+            $response = ['error' => 0, 'data' => $pollOption->addOption($id)];
 
         } catch (Exception $ex) {
             $response = ['error' => 1, 'message' => $ex->getMessage()];
@@ -128,6 +128,34 @@ class UserController extends Controller
         try {
             $pollOption = new PollOpt();
             $response = ['error' => 0, 'data' => $pollOption->deleteOption($id, $opt_id)];
+
+        } catch (Exception $ex) {
+            $response = ['error' => 1, 'message' => $ex->getMessage()];
+        }
+
+        return response()->json($response);
+    }
+
+    // Update Poll Title
+    public function updatePollTitle($id)
+    {
+        try {
+            $poll = new Poll();
+            $response = ['error' => 0, 'data' => $poll->updatePollTitle($id)];
+
+        } catch (Exception $ex) {
+            $response = ['error' => 1, 'message' => $ex->getMessage()];
+        }
+
+        return response()->json($response);
+    }
+
+    // Delete Poll
+    public function deletePoll($id)
+    {
+        try {
+            $poll = new Poll();
+            $response = ['error' => 0, 'data' => $poll->deletePoll($id)];
 
         } catch (Exception $ex) {
             $response = ['error' => 1, 'message' => $ex->getMessage()];

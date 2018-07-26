@@ -17,9 +17,9 @@ class PollOpt extends Model
     protected $table = 'poll_opts';
 
     // Add Poll Option
-    public function addOption(Request $request, $id)
+    public function addOption($id)
     {
-        $validator = Validator::make($request->all(), [
+        $validator = Validator::make(request()->all(), [
             'option' => 'required'
         ]);
 
@@ -32,13 +32,10 @@ class PollOpt extends Model
         if($poll_count > 0) {
             $poll_opt = new PollOpt();
             $poll_opt->poll_id = $id;
-            $poll_opt->options = $request->input('option');
+            $poll_opt->options = request()->input('option');
             $poll_opt->save();
-
-            // return response()->json(['error' => 0, 'data' => $poll_opt]);
             
         } else {
-            // return response()->json(['error' => 1, 'message' => 'No Records found.']);
             throw new Exception('No Records Found.');
         }
 
@@ -52,7 +49,7 @@ class PollOpt extends Model
         
         if($poll_opt_count > 0) {
             $del_poll_opt = DB::table('poll_opts')->where('poll_id', $id)->where('id', $opt_id)->delete();
-            $deleted = 'Deleted Successfully';
+            $deleted = 'Poll Option Deleted Successfully';
 
         } else {
             throw new Exception('No Records Found.');

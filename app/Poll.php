@@ -17,9 +17,9 @@ class Poll extends Model
     protected $table = 'polls';
 
     // Add Poll
-    public function addPoll(Request $request)
+    public function addPoll()
     {
-        $polls = $request->all();
+        $polls = request()->all();
         $pollopt_length = count($polls['options']);
 
         $poll = new Poll();
@@ -61,7 +61,7 @@ class Poll extends Model
                 $polls_list[] = [
                     'id' => $polls[$i]->id,
                     'title' => $polls[$i]->title,
-                    'options' => $poll_opts 
+                    'options' => $poll_opts
                 ];
             }
 
@@ -127,15 +127,44 @@ class Poll extends Model
                 'vote' => $do_vote->vote
             );
 
-            
-
-            // return response()->json(['error' => 0, 'data' => [ 'id' => $id, 'title' => $poll_title, 'option_id' => $opt_id, 'option' => $poll_opt, 'vote' => $do_vote->vote ]]);
-
         } else {
-            // return response()->json(['error' => 1, 'message' => 'No Records found.']);
             throw new Exception('No Records Found.');
         }
 
         return $poll_vote;
+    }
+
+    // Update Poll Title
+    public function updatePollTitle($id)
+    {
+        $poll = DB::table('polls')->where('id', $id)->count();
+
+        if($poll > 0) {
+            $poll_title = Poll::find($id);
+            $poll_title->title = request()->input('title');
+            
+            $poll_title->save();
+        } else {
+            throw new Exception('No Records Found.');
+        }
+
+        return $poll_title;
+    }
+
+    // Delete Poll
+    public function deletePoll($id)
+    {
+        $poll = DB::table('polls')->where('id', $id)->count();
+        
+        if($poll > 0) {
+            $del_poll = DB::table('polls')->where('id', $id)->delete();
+            $del_poll_opts = DB::table('poll_opts')->where('poll_id', $id)->delete();
+            $deleted = 'Poll Deleted Successfully';
+
+        } else {
+            throw new Exception('No Records Found.');
+        }
+
+        return $deleted;
     }
 }

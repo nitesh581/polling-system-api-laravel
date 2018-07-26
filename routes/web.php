@@ -41,3 +41,9 @@ Route::post('/add_poll_option/{id}', 'UserController@addOption');
 
 // Delete Poll Option
 Route::delete('/delete_poll_option/{id}/{opt_id}', 'UserController@deleteOption');
+
+// Update Poll Title
+Route::put('/update_poll_title/{id}', 'UserController@updatePollTitle');
+
+// Delete Poll
+Route::delete('/delete_poll/{id}', 'UserController@deletePoll');
