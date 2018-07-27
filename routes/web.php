@@ -14,3 +14,36 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+// Add User
+Route::post('/add_user', 'UserController@addUser');
+
+// Login User
+Route::post('/login', 'UserController@loginUser');
+
+// List All Users
+Route::get('/list_users', 'UserController@listUsers');
+
+// Add Poll
+Route::post('/add_poll/{user_id}', 'UserController@addPoll');
+
+// List Polls
+Route::get('/list_polls', 'UserController@listPolls');
+
+// List a Poll
+Route::get('/list_poll/{id}', 'UserController@listPoll');
+
+// Vote Api
+Route::put('/vote/{id}/{opt_id}', 'UserController@doVote');
+
+// Add Poll Option
+Route::post('/add_poll_option/{id}', 'UserController@addOption');
+
+// Delete Poll Option
+Route::delete('/delete_poll_option/{id}/{opt_id}', 'UserController@deleteOption');
+
+// Update Poll Title
+Route::put('/update_poll_title/{id}', 'UserController@updatePollTitle');
+
+// Delete Poll
+Route::delete('/delete_poll/{id}', 'UserController@deletePoll');
