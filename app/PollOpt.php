@@ -27,16 +27,15 @@ class PollOpt extends Model
         }
 
         $poll_count = DB::table('polls')->where('id', $id)->count();
-
-        if($poll_count > 0) {
-            $poll_opt = new PollOpt();
-            $poll_opt->poll_id = $id;
-            $poll_opt->options = $data['option'];
-            $poll_opt->save();
-            
-        } else {
-            throw new Exception('No Records Found.');
+        
+        if($poll_count < 1) {
+            throw new Exception('No Records Found.');    
         }
+
+        $poll_opt = new PollOpt();
+        $poll_opt->poll_id = $id;
+        $poll_opt->options = $data['option'];
+        $poll_opt->save();
 
         return $poll_opt;
     }
@@ -46,13 +45,12 @@ class PollOpt extends Model
     {
         $poll_opt_count = DB::table('poll_opts')->where('poll_id', $id)->where('id', $opt_id)->count();
         
-        if($poll_opt_count > 0) {
-            $del_poll_opt = DB::table('poll_opts')->where('poll_id', $id)->where('id', $opt_id)->delete();
-            $deleted = 'Poll Option Deleted Successfully';
-
-        } else {
+        if($poll_opt_count < 1) {
             throw new Exception('No Records Found.');
         }
+
+        $del_poll_opt = DB::table('poll_opts')->where('poll_id', $id)->where('id', $opt_id)->delete();
+        $deleted = 'Poll Option Deleted Successfully';
 
         return $deleted;
     }

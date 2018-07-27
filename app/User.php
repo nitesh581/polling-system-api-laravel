@@ -54,17 +54,14 @@ class User extends Authenticatable
 
         if($user_count > 0){
             throw new Exception('User already exist.');
-
-        } else {
-
-            $user = new User();
-            $user->name = $data['name'];
-            $user->email = $email;
-            $user->password = bcrypt($data['password']);
-            $user->role = $data['role'];
-            $user->save();
-            
         }
+
+        $user = new User();
+        $user->name = $data['name'];
+        $user->email = $email;
+        $user->password = bcrypt($data['password']);
+        $user->role = $data['role'];
+        $user->save();
 
         return $user;
     }
@@ -72,14 +69,13 @@ class User extends Authenticatable
     // Login User
     public function loginUser($data)
     {
-        if(Auth::attempt($data)){
-            $user = User::find(auth()->id());
-            $user->api_token = str_random(60);
-            $user->save();
-            
-        } else {
+        if(!Auth::attempt($data)){
             throw new Exception('User not exists.');
         }
+
+        $user = User::find(auth()->id());
+        $user->api_token = str_random(60);
+        $user->save();
 
         return $user;
     }
@@ -87,14 +83,14 @@ class User extends Authenticatable
     // List All Users
     public function listUsers()
     {
-        $users_count = DB::table('users')->count();
-        
-        if($users_count > 0){
-            $users = DB::table('users')->select('id', 'name', 'email', 'role')->get();            
-        } else {
-            throw new Exception('No Records Found.');
+        $users_count = DB::table('users')->count();        
+
+        if($users_count < 1){
+            throw new Exception('No Records Found.');            
         }
-        
+
+        $users = DB::table('users')->select('id', 'name', 'email', 'role')->get();
+                        
         return $users;                
     }
     

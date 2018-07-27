@@ -21,11 +21,13 @@ class UserController extends Controller
         try {
             $data = request()->all();
             $user = new User();
-            $response = ['error' => 0, 'data' => $user->addUser($data)];
+            $addUser = $user->addUser($data);
             
             $poll = new Poll();
-            $poll->addDefaultPoll($response['data']['id']);
-            
+            $poll->addDefaultPoll($addUser['id']);
+
+            $response = ['error' => 0, 'data' => $addUser];
+
         } catch (Exception $ex) {
             $response = ['error' => 1, 'message' => $ex->getMessage()];
         }
