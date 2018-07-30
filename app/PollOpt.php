@@ -16,24 +16,33 @@ class PollOpt extends Model
     protected $table = 'poll_opts';
 
     // Add Poll Option
-    public function addOption($id, $data)
+    public function addOption($poll_id, $data, $token)
     {
+        if($poll_id == 0) {
+            throw new Exception('Please provide a valid poll id.');
+        }
+
         $validator = Validator::make($data, [
             'option' => 'required'
         ]);
 
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()]);
+        }      
+        
+        $user = DB::table('users')->where('api_token', $token)->get();
+        for($i = 0; $i < count($user); $i++){
+            $user_id = $user[$i]->id;
         }
 
-        $poll_count = DB::table('polls')->where('id', $id)->count();
+        $poll_count = DB::table('polls')->where('id', $poll_id)->where('user_id', $user_id)->count();
         
         if($poll_count < 1) {
-            throw new Exception('No Records Found.');    
+            throw new Exception('No polls found to add option.');    
         }
 
         $poll_opt = new PollOpt();
-        $poll_opt->poll_id = $id;
+        $poll_opt->poll_id = $poll_id;
         $poll_opt->options = $data['option'];
         $poll_opt->save();
 
@@ -41,15 +50,25 @@ class PollOpt extends Model
     }
 
     // Delete Poll Option
-    public function deleteOption($id, $opt_id)
+    public function deleteOption($poll_id, $opt_id, $token)
     {
-        $poll_opt_count = DB::table('poll_opts')->where('poll_id', $id)->where('id', $opt_id)->count();
+        $user = DB::table('users')->where('api_token', $token)->get();
+        for($i = 0; $i < count($user); $i++){
+            $user_id = $user[$i]->id;
+        }
+        
+        $poll_opt_count = DB::table('polls')
+                              ->join('poll_opts', 'polls.id', '=', 'poll_opts.poll_id')
+                              ->select('polls.id', 'poll_opts.id as opt_id', 'title', 'options', 'vote')
+                              ->where('polls.id', $poll_id)
+                              ->where('polls.user_id', $user_id)
+                              ->where('poll_opts.id', $opt_id)->count();
         
         if($poll_opt_count < 1) {
-            throw new Exception('No Records Found.');
+            throw new Exception('No options found to delete.');
         }
 
-        $del_poll_opt = DB::table('poll_opts')->where('poll_id', $id)->where('id', $opt_id)->delete();
+        $del_poll_opt = DB::table('poll_opts')->where('poll_id', $poll_id)->where('id', $opt_id)->delete();
         $deleted = 'Poll Option Deleted Successfully';
 
         return $deleted;
