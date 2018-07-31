@@ -4,10 +4,10 @@ For any issues contact @nitesh on slack
 
 <h1>Api's for poll management system</h1>
 
-<b>1. Add User</b>
+<p><b>1. Add User</b></p>
 http://dev.hr.excellencetechnologies.in:8000/add_user
 <p>Request Type - POST</p>
-<p>Response User Created - </p>
+<p>Response User Created - 
 {
   "error": 0,
   "data": 
@@ -21,6 +21,7 @@ http://dev.hr.excellencetechnologies.in:8000/add_user
       "id": 1
   }
 }
+</p>
 
 <p>Response User already exists - { "error": 1, "message": "User already exist." } </p>
        
