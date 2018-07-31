@@ -9,12 +9,20 @@ use App\PollOpt;
 use Validator;
 use Exception;
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\GetUserId;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 
 class UserController extends Controller
 {   
+    public function __construct()
+    {
+        $this->middleware('getUserRole', ['only' => 'listUsers', 'listPolls', 'listPoll']);
+
+        $this->middleware('getUserId', ['only' => 'addPoll', 'addOption', 'deleteOption', 'updatePollTitle', 'deletePoll']);
+    }
+
     // Add User
     public function addUser()
     {
@@ -66,9 +74,10 @@ class UserController extends Controller
     }
 
     // Add Poll
-    public function addPoll($user_id)
+    public function addPoll()
     {
         try {
+            $user_id = request()->get('user_id');
             $data = request()->all();
             $poll = new Poll();
             $response = ['error' => 0, 'data' => $poll->addPoll($user_id, $data)];
@@ -95,11 +104,11 @@ class UserController extends Controller
     }
     
     // List a Poll
-    public function listPoll($id)
+    public function listPoll($poll_id)
     {
         try {
             $poll = new Poll();
-            $response = ['error' => 0, 'data' => $poll->listPoll($id)];
+            $response = ['error' => 0, 'data' => $poll->listPoll($poll_id)];
 
         } catch (Exception $ex) {
             $response = ['error' => 1, 'message' => $ex->getMessage()];
@@ -109,11 +118,11 @@ class UserController extends Controller
     }
 
     // Vote Api
-    public function doVote($id, $opt_id)
+    public function doVote($poll_id, $opt_id)
     {
         try {
             $poll = new Poll();
-            $response = ['error' => 0, 'data' => $poll->doVote($id, $opt_id)];
+            $response = ['error' => 0, 'data' => $poll->doVote($poll_id, $opt_id)];
 
         } catch (Exception $ex) {
             $response = ['error' => 1, 'message' => $ex->getMessage()];
@@ -123,12 +132,14 @@ class UserController extends Controller
     }
 
     // Add Poll Option
-    public function addOption($id)
+    public function addOption($poll_id)
     {
         try {
+            $user_id = request()->get('user_id');            
             $data = request()->all();
+            
             $pollOption = new PollOpt();
-            $response = ['error' => 0, 'data' => $pollOption->addOption($id, $data)];
+            $response = ['error' => 0, 'data' => $pollOption->addOption($poll_id, $data, $user_id)];
 
         } catch (Exception $ex) {
             $response = ['error' => 1, 'message' => $ex->getMessage()];
@@ -138,11 +149,12 @@ class UserController extends Controller
     }
 
     // Delete Poll Option
-    public function deleteOption($id, $opt_id)
+    public function deleteOption($poll_id, $opt_id)
     {
         try {
+            $user_id = request()->get('user_id');
             $pollOption = new PollOpt();
-            $response = ['error' => 0, 'data' => $pollOption->deleteOption($id, $opt_id)];
+            $response = ['error' => 0, 'data' => $pollOption->deleteOption($poll_id, $opt_id, $user_id)];
 
         } catch (Exception $ex) {
             $response = ['error' => 1, 'message' => $ex->getMessage()];
@@ -152,12 +164,13 @@ class UserController extends Controller
     }
 
     // Update Poll Title
-    public function updatePollTitle($id)
+    public function updatePollTitle($poll_id)
     {
         try {
+            $user_id = request()->get('user_id');
             $data = request()->all();
             $poll = new Poll();
-            $response = ['error' => 0, 'data' => $poll->updatePollTitle($id, $data)];
+            $response = ['error' => 0, 'data' => $poll->updatePollTitle($poll_id, $data, $user_id)];
 
         } catch (Exception $ex) {
             $response = ['error' => 1, 'message' => $ex->getMessage()];
@@ -167,11 +180,12 @@ class UserController extends Controller
     }
 
     // Delete Poll
-    public function deletePoll($id)
+    public function deletePoll($poll_id)
     {
         try {
+            $user_id = request()->get('user_id');
             $poll = new Poll();
-            $response = ['error' => 0, 'data' => $poll->deletePoll($id)];
+            $response = ['error' => 0, 'data' => $poll->deletePoll($poll_id, $user_id)];
 
         } catch (Exception $ex) {
             $response = ['error' => 1, 'message' => $ex->getMessage()];

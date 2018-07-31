@@ -8,6 +8,7 @@ use App\PollOpt;
 use Validator;
 use Exception;
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\GetUserId;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
@@ -61,6 +62,7 @@ class User extends Authenticatable
         $user->email = $email;
         $user->password = bcrypt($data['password']);
         $user->role = $data['role'];
+        $user->api_token = str_random(60);
         $user->save();
 
         return $user;
@@ -70,7 +72,7 @@ class User extends Authenticatable
     public function loginUser($data)
     {
         if(!Auth::attempt($data)){
-            throw new Exception('User not exists.');
+            throw new Exception('Invalid Username or Password.');
         }
 
         $user = User::find(auth()->id());
@@ -83,14 +85,13 @@ class User extends Authenticatable
     // List All Users
     public function listUsers()
     {
-        $users_count = DB::table('users')->count();        
+        $users_count = DB::table('users')->count();
 
         if($users_count < 1){
-            throw new Exception('No Records Found.');            
+            throw new Exception('No Records Found.');
         }
 
         $users = DB::table('users')->select('id', 'name', 'email', 'role')->get();
-                        
         return $users;                
     }
     

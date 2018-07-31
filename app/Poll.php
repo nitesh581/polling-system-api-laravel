@@ -8,6 +8,7 @@ use App\PollOpt;
 use Validator;
 use Exception;
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\GetUserId;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,12 +19,6 @@ class Poll extends Model
     // Add Poll
     public function addPoll($user_id, $data)
     {
-        $user_exist = DB::table('users')->where('id', $user_id)->count();
-
-        if($user_exist < 1){
-            throw new Exception('User Not Found.');
-        }
-
         $pollopt_length = count($data['options']);
                 
         $poll = new Poll();
@@ -59,8 +54,7 @@ class Poll extends Model
             throw new Exception('No Records Found.');
         }
 
-        $polls_list = array(); 
-        $polls = DB::table('polls')->select('id', 'title')->get();            
+        $polls = DB::table('polls')->select('id', 'title')->get();         
         
         for($i = 0; $i < count($polls); $i++){
             $poll_opts = DB::table('poll_opts')->select('options', 'vote')->where('poll_id', $polls[$i]->id)->get();
@@ -76,16 +70,19 @@ class Poll extends Model
     }
 
     // List a Poll
-    public function listPoll($id)
+    public function listPoll($poll_id)
     {
-        $poll_count = DB::table('polls')->where('id', $id)->count();
-
+        if($poll_id == 0) {
+            throw new Exception('Please provide a valid poll id.');
+        }
+        
+        $poll_count = DB::table('polls')->where('id', $poll_id)->count();
         if($poll_count < 1){
             throw new Exception('No Records Found.');
         }
 
-        $poll = DB::table('polls')->select('id', 'title')->where('id', $id)->get();
-        $poll_opts = DB::table('poll_opts')->select('options', 'vote')->where('poll_id', $id)->get();
+        $poll = DB::table('polls')->select('id', 'title')->where('id', $poll_id)->get();
+        $poll_opts = DB::table('poll_opts')->select('options', 'vote')->where('poll_id', $poll_id)->get();
 
         for($i = 0; $i < $poll_count; $i++){
             $poll_id = $poll[$i]->id;
@@ -102,15 +99,23 @@ class Poll extends Model
     }
     
     // Vote Api
-    public function doVote($id, $opt_id)
+    public function doVote($poll_id, $opt_id)
     {
+        if($poll_id == 0) {
+            throw new Exception('Please provide a valid poll id.');
+        }
+
+        if($opt_id == 0) {
+            throw new Exception('Please provide a valid poll option id to vote.');
+        }
+
         $vote_poll = DB::table('polls')
                          ->join('poll_opts', 'polls.id', '=', 'poll_opts.poll_id')
                          ->select('polls.id', 'poll_opts.id as opt_id', 'title', 'options', 'vote')
-                         ->where('polls.id', $id)->where('poll_opts.id', $opt_id)->get();
+                         ->where('polls.id', $poll_id)->where('poll_opts.id', $opt_id)->get();
 
         if(count($vote_poll) < 1){
-            throw new Exception('No Records Found.');
+            throw new Exception('No records found to vote with Poll ' . $poll_id . ' and Option ' . $opt_id . '.');
         }
 
         for($i = 0; $i < count($vote_poll); $i++){
@@ -124,7 +129,7 @@ class Poll extends Model
         $do_vote->save();
 
         $poll_vote = array(
-            'id' => $id,
+            'id' => $poll_id,
             'title' => $poll_title,
             'option_id' => $opt_id,
             'option' => $poll_opt,
@@ -135,15 +140,27 @@ class Poll extends Model
     }
 
     // Update Poll Title
-    public function updatePollTitle($id, $data)
+    public function updatePollTitle($poll_id, $data, $user_id)
     {
-        $poll = DB::table('polls')->where('id', $id)->count();
+        if($poll_id == 0) {
+            throw new Exception('Please provide a valid poll id.');
+        }
+        
+        $validator = Validator::make($data, [
+            'title' => 'required'
+        ]);
 
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()]);
+        }
+        
+        $poll = DB::table('polls')->where('id', $poll_id)->where('user_id', $user_id)->count();
+        
         if($poll < 1) {
-            throw new Exception('No Records Found.');
+            throw new Exception('No polls found to update.');
         }
 
-        $poll_title = Poll::find($id);
+        $poll_title = Poll::find($poll_id);
         $poll_title->title = $data['title'];
         $poll_title->save();
 
@@ -151,16 +168,20 @@ class Poll extends Model
     }
 
     // Delete Poll
-    public function deletePoll($id)
+    public function deletePoll($poll_id, $user_id)
     {
-        $poll = DB::table('polls')->where('id', $id)->count();
-        
-        if($poll < 1) {
-            throw new Exception('No Records Found.');
+        if($poll_id == 0) {
+            throw new Exception('Please provide a valid poll id.');
         }
 
-        $del_poll = DB::table('polls')->where('id', $id)->delete();
-        $del_poll_opts = DB::table('poll_opts')->where('poll_id', $id)->delete();
+        $poll = DB::table('polls')->where('id', $poll_id)->where('user_id', $user_id)->count();
+        
+        if($poll < 1) {
+            throw new Exception('No polls found to delete.');
+        }
+
+        $del_poll = DB::table('polls')->where('id', $poll_id)->delete();
+        $del_poll_opts = DB::table('poll_opts')->where('poll_id', $poll_id)->delete();
         $deleted = 'Poll Deleted Successfully';
 
         return $deleted;

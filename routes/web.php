@@ -22,28 +22,28 @@ Route::post('/add_user', 'UserController@addUser');
 Route::post('/login', 'UserController@loginUser');
 
 // List All Users
-Route::get('/list_users', 'UserController@listUsers');
+Route::get('/list_users', 'UserController@listUsers')->middleware('getUserRole');
 
 // Add Poll
-Route::post('/add_poll/{user_id}', 'UserController@addPoll');
+Route::post('/add_poll', 'UserController@addPoll')->middleware('getUserId');
 
 // List Polls
-Route::get('/list_polls', 'UserController@listPolls');
+Route::get('/list_polls', 'UserController@listPolls')->middleware('getUserRole');
 
 // List a Poll
-Route::get('/list_poll/{id}', 'UserController@listPoll');
+Route::get('/list_poll/{poll_id}', 'UserController@listPoll')->middleware('getUserRole');
 
 // Vote Api
-Route::put('/vote/{id}/{opt_id}', 'UserController@doVote');
+Route::put('/vote/{poll_id}/{opt_id}', 'UserController@doVote');
 
 // Add Poll Option
-Route::post('/add_poll_option/{id}', 'UserController@addOption');
+Route::post('/add_poll_option/{poll_id}', 'UserController@addOption')->middleware('getUserId');
 
 // Delete Poll Option
-Route::delete('/delete_poll_option/{id}/{opt_id}', 'UserController@deleteOption');
+Route::delete('/delete_poll_option/{poll_id}/{opt_id}', 'UserController@deleteOption')->middleware('getUserId');
 
 // Update Poll Title
-Route::put('/update_poll_title/{id}', 'UserController@updatePollTitle');
+Route::put('/update_poll_title/{poll_id}', 'UserController@updatePollTitle')->middleware('getUserId');
 
 // Delete Poll
-Route::delete('/delete_poll/{id}', 'UserController@deletePoll');
+Route::delete('/delete_poll/{poll_id}', 'UserController@deletePoll')->middleware('getUserId');
