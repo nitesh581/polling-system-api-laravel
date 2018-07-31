@@ -60,7 +60,7 @@ For any issues contact @nitesh on slack
 }
 </p>
 
-<p>Response Login Failed - { "error": 1, "message": "You are not an admin." } </p>
+<p>Response Failed - { "error": 1, "message": "You are not an admin." } </p>
 <br>
        
 
