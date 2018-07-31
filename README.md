@@ -20,7 +20,7 @@ For any issues contact @nitesh on slack
   }
 }
 </p>
-
+<br>
 <p>Response User already exists - { "error": 1, "message": "User already exist." } </p>
 
 <p><b>2. Login User</b></p>
@@ -40,6 +40,24 @@ For any issues contact @nitesh on slack
 }
 </p>
 
-<p>Response User already exists - { "error": 1, "message": "Invalid Username or Password." } </p>
+<p>Response Login Failed - { "error": 1, "message": "Invalid Username or Password." } </p>
+<br>
+<p><b>3. List Users</b></p>
+<p>http://dev.hr.excellencetechnologies.in:8000/list_users</p>
+<p>Request Type - GET</p>
+<p>Response List - 
+{
+  "error": 0,
+  "data": 
+  {
+      "id": 1,
+      "name": "Nitesh",
+      "email": "nitesh@gmail.com",
+      "role": "admin",
+  }
+}
+</p>
+
+<p>Response Login Failed - { "error": 1, "message": "You are not an admin." } </p>
        
 
