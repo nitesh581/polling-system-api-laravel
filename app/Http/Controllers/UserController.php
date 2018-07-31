@@ -9,12 +9,20 @@ use App\PollOpt;
 use Validator;
 use Exception;
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\GetUserId;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 
 class UserController extends Controller
 {   
+    public function __construct()
+    {
+        $this->middleware('getUserRole', ['only' => 'listUsers', 'listPolls', 'listPoll']);
+
+        $this->middleware('getUserId', ['only' => 'addPoll', 'addOption', 'deleteOption', 'updatePollTitle', 'deletePoll']);
+    }
+
     // Add User
     public function addUser()
     {
@@ -24,7 +32,7 @@ class UserController extends Controller
             $addUser = $user->addUser($data);
             
             $poll = new Poll();
-            $poll->addDefaultPoll($addUser['api_token']);
+            $poll->addDefaultPoll($addUser['id']);
 
             $response = ['error' => 0, 'data' => $addUser];
 
@@ -55,9 +63,8 @@ class UserController extends Controller
     public function listUsers()
     {        
         try {
-            $token = request()->header('api_token');
             $user = new User();
-            $response = ['error' => 0, 'data' => $user->listUsers($token)];
+            $response = ['error' => 0, 'data' => $user->listUsers()];
 
         } catch (Exception $ex) {
             $response = ['error' => 1, 'message' => $ex->getMessage()];
@@ -70,10 +77,10 @@ class UserController extends Controller
     public function addPoll()
     {
         try {
-            $token = request()->header('api_token');
+            $user_id = request()->get('user_id');
             $data = request()->all();
             $poll = new Poll();
-            $response = ['error' => 0, 'data' => $poll->addPoll($token, $data)];
+            $response = ['error' => 0, 'data' => $poll->addPoll($user_id, $data)];
 
         } catch (Exception $ex) {
             $response = ['error' => 1, 'message' => $ex->getMessage()];
@@ -86,9 +93,8 @@ class UserController extends Controller
     public function listPolls()
     {
         try {
-            $token = request()->header('api_token');
             $poll = new Poll();
-            $response = ['error' => 0, 'data' => $poll->listPolls($token)];
+            $response = ['error' => 0, 'data' => $poll->listPolls()];
 
         } catch (Exception $ex) {
             $response = ['error' => 1, 'message' => $ex->getMessage()];
@@ -101,9 +107,8 @@ class UserController extends Controller
     public function listPoll($poll_id)
     {
         try {
-            $token = request()->header('api_token');
             $poll = new Poll();
-            $response = ['error' => 0, 'data' => $poll->listPoll($poll_id, $token)];
+            $response = ['error' => 0, 'data' => $poll->listPoll($poll_id)];
 
         } catch (Exception $ex) {
             $response = ['error' => 1, 'message' => $ex->getMessage()];
@@ -130,10 +135,11 @@ class UserController extends Controller
     public function addOption($poll_id)
     {
         try {
-            $token = request()->header('api_token'); 
+            $user_id = request()->get('user_id');            
             $data = request()->all();
+            
             $pollOption = new PollOpt();
-            $response = ['error' => 0, 'data' => $pollOption->addOption($poll_id, $data, $token)];
+            $response = ['error' => 0, 'data' => $pollOption->addOption($poll_id, $data, $user_id)];
 
         } catch (Exception $ex) {
             $response = ['error' => 1, 'message' => $ex->getMessage()];
@@ -146,9 +152,9 @@ class UserController extends Controller
     public function deleteOption($poll_id, $opt_id)
     {
         try {
-            $token = request()->header('api_token');
+            $user_id = request()->get('user_id');
             $pollOption = new PollOpt();
-            $response = ['error' => 0, 'data' => $pollOption->deleteOption($poll_id, $opt_id, $token)];
+            $response = ['error' => 0, 'data' => $pollOption->deleteOption($poll_id, $opt_id, $user_id)];
 
         } catch (Exception $ex) {
             $response = ['error' => 1, 'message' => $ex->getMessage()];
@@ -161,10 +167,10 @@ class UserController extends Controller
     public function updatePollTitle($poll_id)
     {
         try {
-            $token = request()->header('api_token');
+            $user_id = request()->get('user_id');
             $data = request()->all();
             $poll = new Poll();
-            $response = ['error' => 0, 'data' => $poll->updatePollTitle($poll_id, $data, $token)];
+            $response = ['error' => 0, 'data' => $poll->updatePollTitle($poll_id, $data, $user_id)];
 
         } catch (Exception $ex) {
             $response = ['error' => 1, 'message' => $ex->getMessage()];
@@ -177,9 +183,9 @@ class UserController extends Controller
     public function deletePoll($poll_id)
     {
         try {
-            $token = request()->header('api_token');
+            $user_id = request()->get('user_id');
             $poll = new Poll();
-            $response = ['error' => 0, 'data' => $poll->deletePoll($poll_id, $token)];
+            $response = ['error' => 0, 'data' => $poll->deletePoll($poll_id, $user_id)];
 
         } catch (Exception $ex) {
             $response = ['error' => 1, 'message' => $ex->getMessage()];

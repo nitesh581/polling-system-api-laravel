@@ -8,6 +8,7 @@ use App\PollOpt;
 use Validator;
 use Exception;
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\GetUserId;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
@@ -82,21 +83,12 @@ class User extends Authenticatable
     }
 
     // List All Users
-    public function listUsers($token)
+    public function listUsers()
     {
         $users_count = DB::table('users')->count();
 
         if($users_count < 1){
             throw new Exception('No Records Found.');
-        }
-
-        $admin = DB::table('users')->where('api_token', $token)->get();
-        for($i = 0; $i < count($admin); $i++){
-            $role = $admin[$i]->role;
-        }
-
-        if($role != 'admin'){
-            throw new Exception('You are not an admin.');
         }
 
         $users = DB::table('users')->select('id', 'name', 'email', 'role')->get();

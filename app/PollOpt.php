@@ -8,6 +8,7 @@ use App\Poll;
 use Validator;
 use Exception;
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\GetUserId;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,7 +17,7 @@ class PollOpt extends Model
     protected $table = 'poll_opts';
 
     // Add Poll Option
-    public function addOption($poll_id, $data, $token)
+    public function addOption($poll_id, $data, $user_id)
     {
         if($poll_id == 0) {
             throw new Exception('Please provide a valid poll id.');
@@ -30,11 +31,6 @@ class PollOpt extends Model
             return response()->json(['error' => $validator->errors()]);
         }      
         
-        $user = DB::table('users')->where('api_token', $token)->get();
-        for($i = 0; $i < count($user); $i++){
-            $user_id = $user[$i]->id;
-        }
-
         $poll_count = DB::table('polls')->where('id', $poll_id)->where('user_id', $user_id)->count();
         
         if($poll_count < 1) {
@@ -50,13 +46,8 @@ class PollOpt extends Model
     }
 
     // Delete Poll Option
-    public function deleteOption($poll_id, $opt_id, $token)
+    public function deleteOption($poll_id, $opt_id, $user_id)
     {
-        $user = DB::table('users')->where('api_token', $token)->get();
-        for($i = 0; $i < count($user); $i++){
-            $user_id = $user[$i]->id;
-        }
-        
         $poll_opt_count = DB::table('polls')
                               ->join('poll_opts', 'polls.id', '=', 'poll_opts.poll_id')
                               ->select('polls.id', 'poll_opts.id as opt_id', 'title', 'options', 'vote')

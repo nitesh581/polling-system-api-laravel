@@ -8,6 +8,7 @@ use App\PollOpt;
 use Validator;
 use Exception;
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\GetUserId;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,18 +17,8 @@ class Poll extends Model
     protected $table = 'polls';
 
     // Add Poll
-    public function addPoll($token, $data)
+    public function addPoll($user_id, $data)
     {
-        $user = DB::table('users')->where('api_token', $token)->get();
-        
-        if(count($user) < 1){
-            throw new Exception('User Not Found.');
-        }
-
-        for($i = 0; $i < count($user); $i++){
-            $user_id = $user[$i]->id;
-        }
-
         $pollopt_length = count($data['options']);
                 
         $poll = new Poll();
@@ -55,21 +46,12 @@ class Poll extends Model
     }
 
     // List Polls
-    public function listPolls($token)
+    public function listPolls()
     {
         $polls_count = DB::table('polls')->count();
         
         if($polls_count < 1){
             throw new Exception('No Records Found.');
-        }
-
-        $admin = DB::table('users')->where('api_token', $token)->get();
-        for($i = 0; $i < count($admin); $i++){
-            $role = $admin[$i]->role;
-        }
-
-        if($role != 'admin'){
-            throw new Exception('You are not an admin.');
         }
 
         $polls = DB::table('polls')->select('id', 'title')->get();         
@@ -88,7 +70,7 @@ class Poll extends Model
     }
 
     // List a Poll
-    public function listPoll($poll_id, $token)
+    public function listPoll($poll_id)
     {
         if($poll_id == 0) {
             throw new Exception('Please provide a valid poll id.');
@@ -97,15 +79,6 @@ class Poll extends Model
         $poll_count = DB::table('polls')->where('id', $poll_id)->count();
         if($poll_count < 1){
             throw new Exception('No Records Found.');
-        }
-
-        $admin = DB::table('users')->where('api_token', $token)->get();
-        for($i = 0; $i < count($admin); $i++){
-            $role = $admin[$i]->role;
-        }
-
-        if($role != 'admin'){
-            throw new Exception('You are not an admin.');
         }
 
         $poll = DB::table('polls')->select('id', 'title')->where('id', $poll_id)->get();
@@ -167,18 +140,12 @@ class Poll extends Model
     }
 
     // Update Poll Title
-    public function updatePollTitle($poll_id, $data, $token)
+    public function updatePollTitle($poll_id, $data, $user_id)
     {
         if($poll_id == 0) {
             throw new Exception('Please provide a valid poll id.');
         }
         
-        $user = DB::table('users')->where('api_token', $token)->get();
-        
-        for($i = 0; $i < count($user); $i++){
-            $user_id = $user[$i]->id;
-        }
-
         $validator = Validator::make($data, [
             'title' => 'required'
         ]);
@@ -201,15 +168,10 @@ class Poll extends Model
     }
 
     // Delete Poll
-    public function deletePoll($poll_id, $token)
+    public function deletePoll($poll_id, $user_id)
     {
         if($poll_id == 0) {
             throw new Exception('Please provide a valid poll id.');
-        }
-        
-        $user = DB::table('users')->where('api_token', $token)->get();
-        for($i = 0; $i < count($user); $i++){
-            $user_id = $user[$i]->id;
         }
 
         $poll = DB::table('polls')->where('id', $poll_id)->where('user_id', $user_id)->count();
@@ -226,7 +188,7 @@ class Poll extends Model
     }
 
     // Default Poll
-    public function addDefaultPoll($token)
+    public function addDefaultPoll($user_id)
     {
         $default = array(
             'title' => 'Default Poll',
@@ -251,7 +213,7 @@ class Poll extends Model
         );
 
         $poll = new Poll();
-        $poll->addPoll($token, $default);
+        $poll->addPoll($user_id, $default);
 
         return $poll;
     }
