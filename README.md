@@ -5,7 +5,7 @@ For any issues contact @nitesh on slack
 <h1>Api's for poll management system</h1>
 
 <p><b>1. Add User</b></p>
-http://dev.hr.excellencetechnologies.in:8000/add_user
+<p>http://dev.hr.excellencetechnologies.in:8000/add_user</p>
 <p>Request Type - POST</p>
 <p>Response User Created - 
 {
