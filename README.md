@@ -20,8 +20,9 @@ For any issues contact @nitesh on slack
   }
 }
 </p>
-<br>
+
 <p>Response User already exists - { "error": 1, "message": "User already exist." } </p>
+<br>
 
 <p><b>2. Login User</b></p>
 <p>http://dev.hr.excellencetechnologies.in:8000/login</p>
@@ -42,6 +43,7 @@ For any issues contact @nitesh on slack
 
 <p>Response Login Failed - { "error": 1, "message": "Invalid Username or Password." } </p>
 <br>
+
 <p><b>3. List Users</b></p>
 <p>http://dev.hr.excellencetechnologies.in:8000/list_users</p>
 <p>Request Type - GET</p>
@@ -59,5 +61,6 @@ For any issues contact @nitesh on slack
 </p>
 
 <p>Response Login Failed - { "error": 1, "message": "You are not an admin." } </p>
+<br>
        
 
