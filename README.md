@@ -6,8 +6,8 @@ For any issues contact @nitesh on slack
 
 <b>1. Add User</b>
 http://dev.hr.excellencetechnologies.in:8000/add_user
-Request Type - POST
-Response User Created - 
+<p>Request Type - POST</p>
+<p>Response User Created - </p>
 {
   "error": 0,
   "data": 
@@ -22,6 +22,6 @@ Response User Created -
   }
 }
 
-Response User already exists - { "error": 1, "message": "User already exist." }
+<p>Response User already exists - { "error": 1, "message": "User already exist." } </p>
        
 
