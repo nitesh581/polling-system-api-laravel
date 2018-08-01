@@ -42,7 +42,7 @@ class UserController extends Controller
         }
 
         return response()->json($response)->withHeaders([
-                                                'Content-Type' => 'application/x-www-form-urlencoded',
+                                                'Content-Type' => 'application/json',
                                                 'Access-Control-Allow-Origin' => '*',
                                                 'Access-Control-Allow-Credentials' => 'true',
                                                 'Access-Control-Allow-Methods' => 'GET,HEAD,OPTIONS,POST,PUT'
@@ -63,7 +63,7 @@ class UserController extends Controller
         }
         
         return response()->json($response)->withHeaders([
-                                                'Content-Type' => 'application/x-www-form-urlencoded',
+                                                'Content-Type' => 'application/json',
                                                 'Access-Control-Allow-Origin' => '*',
                                                 'Access-Control-Allow-Credentials' => 'true',
                                                 'Access-Control-Allow-Methods' => 'GET,HEAD,OPTIONS,POST,PUT'
@@ -82,7 +82,7 @@ class UserController extends Controller
         }
 
         return response()->json($response)->withHeaders([
-                                            'Content-Type' => 'application/x-www-form-urlencoded',
+                                            'Content-Type' => 'application/json',
                                             'Access-Control-Allow-Origin' => '*',
                                             'Access-Control-Allow-Credentials' => 'true',
                                             'Access-Control-Allow-Methods' => 'GET,HEAD,OPTIONS,POST,PUT'
@@ -103,7 +103,7 @@ class UserController extends Controller
         }
         
         return response()->json($response)->withHeaders([
-                                            'Content-Type' => 'application/x-www-form-urlencoded',
+                                            'Content-Type' => 'application/json',
                                             'Access-Control-Allow-Origin' => '*',
                                             'Access-Control-Allow-Credentials' => 'true',
                                             'Access-Control-Allow-Methods' => 'GET,HEAD,OPTIONS,POST,PUT'
@@ -122,7 +122,7 @@ class UserController extends Controller
         }
         
         return response()->json($response)->withHeaders([
-                                            'Content-Type' => 'application/x-www-form-urlencoded',
+                                            'Content-Type' => 'application/json',
                                             'Access-Control-Allow-Origin' => '*',
                                             'Access-Control-Allow-Credentials' => 'true',
                                             'Access-Control-Allow-Methods' => 'GET,HEAD,OPTIONS,POST,PUT'
@@ -141,7 +141,7 @@ class UserController extends Controller
         }
 
         return response()->json($response)->withHeaders([
-                                                'Content-Type' => 'application/x-www-form-urlencoded',
+                                                'Content-Type' => 'application/json',
                                                 'Access-Control-Allow-Origin' => '*',
                                                 'Access-Control-Allow-Credentials' => 'true',
                                                 'Access-Control-Allow-Methods' => 'GET,HEAD,OPTIONS,POST,PUT'
@@ -160,7 +160,7 @@ class UserController extends Controller
         }
 
         return response()->json($response)->withHeaders([
-                                            'Content-Type' => 'application/x-www-form-urlencoded',
+                                            'Content-Type' => 'application/json',
                                             'Access-Control-Allow-Origin' => '*',
                                             'Access-Control-Allow-Credentials' => 'true',
                                             'Access-Control-Allow-Methods' => 'GET,HEAD,OPTIONS,POST,PUT'
@@ -182,7 +182,7 @@ class UserController extends Controller
         }
 
         return response()->json($response)->withHeaders([
-                                            'Content-Type' => 'application/x-www-form-urlencoded',
+                                            'Content-Type' => 'application/json',
                                             'Access-Control-Allow-Origin' => '*',
                                             'Access-Control-Allow-Credentials' => 'true',
                                             'Access-Control-Allow-Methods' => 'GET,HEAD,OPTIONS,POST,PUT'
@@ -202,7 +202,7 @@ class UserController extends Controller
         }
 
         return response()->json($response)->withHeaders([
-                                            'Content-Type' => 'application/x-www-form-urlencoded',
+                                            'Content-Type' => 'application/json',
                                             'Access-Control-Allow-Origin' => '*',
                                             'Access-Control-Allow-Credentials' => 'true',
                                             'Access-Control-Allow-Methods' => 'GET,HEAD,OPTIONS,POST,PUT'
@@ -223,7 +223,7 @@ class UserController extends Controller
         }
 
         return response()->json($response)->withHeaders([
-                                            'Content-Type' => 'application/x-www-form-urlencoded',
+                                            'Content-Type' => 'application/json',
                                             'Access-Control-Allow-Origin' => '*',
                                             'Access-Control-Allow-Credentials' => 'true',
                                             'Access-Control-Allow-Methods' => 'GET,HEAD,OPTIONS,POST,PUT'
@@ -243,7 +243,7 @@ class UserController extends Controller
         }
 
         return response()->json($response)->withHeaders([
-                                            'Content-Type' => 'application/x-www-form-urlencoded',
+                                            'Content-Type' => 'application/json',
                                             'Access-Control-Allow-Origin' => '*',
                                             'Access-Control-Allow-Credentials' => 'true',
                                             'Access-Control-Allow-Methods' => 'GET,HEAD,OPTIONS,POST,PUT'
