@@ -41,12 +41,7 @@ class UserController extends Controller
             $response = ['error' => 1, 'message' => $ex->getMessage()];
         }
 
-        return response()->json($response)->withHeaders([
-                                                'Content-Type' => 'application/json',
-                                                'Access-Control-Allow-Origin' => '*',
-                                                'Access-Control-Allow-Credentials' => 'true',
-                                                'Access-Control-Allow-Methods' => 'GET,HEAD,OPTIONS,POST,PUT'
-                                            ]);
+        return response()->json($response);
         
     }
 
@@ -62,12 +57,7 @@ class UserController extends Controller
             $response = ['error' => 1, 'message' => $ex->getMessage()];
         }
         
-        return response()->json($response)->withHeaders([
-                                                'Content-Type' => 'application/json',
-                                                'Access-Control-Allow-Origin' => '*',
-                                                'Access-Control-Allow-Credentials' => 'true',
-                                                'Access-Control-Allow-Methods' => 'GET,HEAD,OPTIONS,POST,PUT'
-                                            ]);
+        return response()->json($response);
     }
 
     // List Users
@@ -81,12 +71,7 @@ class UserController extends Controller
             $response = ['error' => 1, 'message' => $ex->getMessage()];
         }
 
-        return response()->json($response)->withHeaders([
-                                            'Content-Type' => 'application/json',
-                                            'Access-Control-Allow-Origin' => '*',
-                                            'Access-Control-Allow-Credentials' => 'true',
-                                            'Access-Control-Allow-Methods' => 'GET,HEAD,OPTIONS,POST,PUT'
-                                        ]);
+        return response()->json($response);
     }
 
     // Add Poll
@@ -102,12 +87,7 @@ class UserController extends Controller
             $response = ['error' => 1, 'message' => $ex->getMessage()];
         }
         
-        return response()->json($response)->withHeaders([
-                                            'Content-Type' => 'application/json',
-                                            'Access-Control-Allow-Origin' => '*',
-                                            'Access-Control-Allow-Credentials' => 'true',
-                                            'Access-Control-Allow-Methods' => 'GET,HEAD,OPTIONS,POST,PUT'
-                                        ]);
+        return response()->json($response);
     }
 
     // List Polls
@@ -121,12 +101,7 @@ class UserController extends Controller
             $response = ['error' => 1, 'message' => $ex->getMessage()];
         }
         
-        return response()->json($response)->withHeaders([
-                                            'Content-Type' => 'application/json',
-                                            'Access-Control-Allow-Origin' => '*',
-                                            'Access-Control-Allow-Credentials' => 'true',
-                                            'Access-Control-Allow-Methods' => 'GET,HEAD,OPTIONS,POST,PUT'
-                                        ]);
+        return response()->json($response);
     }
     
     // List a Poll
@@ -140,12 +115,7 @@ class UserController extends Controller
             $response = ['error' => 1, 'message' => $ex->getMessage()];
         }
 
-        return response()->json($response)->withHeaders([
-                                                'Content-Type' => 'application/json',
-                                                'Access-Control-Allow-Origin' => '*',
-                                                'Access-Control-Allow-Credentials' => 'true',
-                                                'Access-Control-Allow-Methods' => 'GET,HEAD,OPTIONS,POST,PUT'
-                                            ]);
+        return response()->json($response);
     }
 
     // Vote Api
@@ -159,12 +129,7 @@ class UserController extends Controller
             $response = ['error' => 1, 'message' => $ex->getMessage()];
         }
 
-        return response()->json($response)->withHeaders([
-                                            'Content-Type' => 'application/json',
-                                            'Access-Control-Allow-Origin' => '*',
-                                            'Access-Control-Allow-Credentials' => 'true',
-                                            'Access-Control-Allow-Methods' => 'GET,HEAD,OPTIONS,POST,PUT'
-                                        ]);
+        return response()->json($response);
     }
 
     // Add Poll Option
@@ -181,12 +146,7 @@ class UserController extends Controller
             $response = ['error' => 1, 'message' => $ex->getMessage()];
         }
 
-        return response()->json($response)->withHeaders([
-                                            'Content-Type' => 'application/json',
-                                            'Access-Control-Allow-Origin' => '*',
-                                            'Access-Control-Allow-Credentials' => 'true',
-                                            'Access-Control-Allow-Methods' => 'GET,HEAD,OPTIONS,POST,PUT'
-                                        ]);
+        return response()->json($response);
     }
 
     // Delete Poll Option
@@ -201,12 +161,7 @@ class UserController extends Controller
             $response = ['error' => 1, 'message' => $ex->getMessage()];
         }
 
-        return response()->json($response)->withHeaders([
-                                            'Content-Type' => 'application/json',
-                                            'Access-Control-Allow-Origin' => '*',
-                                            'Access-Control-Allow-Credentials' => 'true',
-                                            'Access-Control-Allow-Methods' => 'GET,HEAD,OPTIONS,POST,PUT'
-                                        ]);
+        return response()->json($response);
     }
 
     // Update Poll Title
@@ -222,12 +177,7 @@ class UserController extends Controller
             $response = ['error' => 1, 'message' => $ex->getMessage()];
         }
 
-        return response()->json($response)->withHeaders([
-                                            'Content-Type' => 'application/json',
-                                            'Access-Control-Allow-Origin' => '*',
-                                            'Access-Control-Allow-Credentials' => 'true',
-                                            'Access-Control-Allow-Methods' => 'GET,HEAD,OPTIONS,POST,PUT'
-                                        ]);
+        return response()->json($response);
     }
 
     // Delete Poll
@@ -242,11 +192,6 @@ class UserController extends Controller
             $response = ['error' => 1, 'message' => $ex->getMessage()];
         }
 
-        return response()->json($response)->withHeaders([
-                                            'Content-Type' => 'application/json',
-                                            'Access-Control-Allow-Origin' => '*',
-                                            'Access-Control-Allow-Credentials' => 'true',
-                                            'Access-Control-Allow-Methods' => 'GET,HEAD,OPTIONS,POST,PUT'
-                                        ]);
+        return response()->json($response);
     }
 }
