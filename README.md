@@ -14,6 +14,7 @@ For any issues contact @nitesh on slack
   {
       "name": "Nitesh",
       "email": "nitesh@gmail.com",
+      "password": "nitesh",
       "role": "admin",
       "api_token": "kwKpKNoNjFL8RUnj1i11jkWUNJykntdby2rvsy25ZpkLO9u7hQUOaVdF7GWU",
       "id": 1
@@ -35,6 +36,7 @@ For any issues contact @nitesh on slack
       "id": 1,
       "name": "Nitesh",
       "email": "nitesh@gmail.com",
+      "password": "nitesh",
       "role": "admin",
       "api_token": "J9wPwYX31gH6LzF47E2GZR0adbINQRtbH10WEA8EPTCUofw6QNRPUdmfWEnz",
   }
@@ -55,12 +57,194 @@ For any issues contact @nitesh on slack
       "id": 1,
       "name": "Nitesh",
       "email": "nitesh@gmail.com",
+      "password": "nitesh",
       "role": "admin",
   }
 }
 </p>
 
 <p>Response Failed - { "error": 1, "message": "You are not an admin." } </p>
+<br>
+
+<p><b>4. Add Poll</b></p>
+<p>http://dev.hr.excellencetechnologies.in:8000/add_poll</p>
+<p>Request Type - POST</p>
+<p>Response List - 
+{
+  "error": 0,
+  "data": 
+  {
+      "id": 3,
+      "title": "Dummy poll",
+      "options": [
+            {
+                "options": "demo1",
+                "vote": 0
+            },
+            {
+                "options": "demo2",
+                "vote": 0
+            },
+            {
+                "options": "demo3",
+                "vote": 0
+            },
+            {
+                "options": "demo4",
+                "vote": 0
+            }
+        ]
+  }
+}
+</p>
+<br>
+
+<p><b>5. List Polls</b></p>
+<p>http://dev.hr.excellencetechnologies.in:8000/list_polls</p>
+<p>Request Type - GET</p>
+<p>Response List - 
+{
+    "error": 0,
+    "data": [
+        {
+            "id": 1,
+            "title": "Default Poll",
+            "options": [
+                {
+                    "options": "opt1",
+                    "vote": 5
+                },
+                {
+                    "options": "opt2",
+                    "vote": 0
+                },
+                {
+                    "options": "opt3",
+                    "vote": 0
+                },
+                {
+                    "options": "opt4",
+                    "vote": 0
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "title": "Default Poll",
+            "options": [
+                {
+                    "options": "opt1",
+                    "vote": 0
+                },
+                {
+                    "options": "opt2",
+                    "vote": 0
+                },
+                {
+                    "options": "opt3",
+                    "vote": 0
+                },
+                {
+                    "options": "opt4",
+                    "vote": 0
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "title": "Dummy poll",
+            "options": [
+                {
+                    "options": "demo2",
+                    "vote": 0
+                },
+                {
+                    "options": "demo2",
+                    "vote": 0
+                },
+                {
+                    "options": "demo3",
+                    "vote": 0
+                },
+                {
+                    "options": "demo4",
+                    "vote": 0
+                }
+            ]
+        }
+    ]
+}
+</p>
+
+<p>Response Failed - { "error": 1, "message": "You are not an admin." } </p>
+<br>
+
+<p><b>6. List Single Poll</b></p>
+<p>http://dev.hr.excellencetechnologies.in:8000/list_poll/{poll_id}</p>
+<p>Request Type - GET</p>
+<p>Response List - 
+{
+    "error": 0,
+    "data": {
+        "id": 1,
+        "title": "Default Poll",
+        "options": [
+            {
+                "options": "opt1",
+                "vote": 5
+            },
+            {
+                "options": "opt2",
+                "vote": 0
+            },
+            {
+                "options": "opt3",
+                "vote": 0
+            },
+            {
+                "options": "opt4",
+                "vote": 0
+            }
+        ]
+    }
+}
+</p>
+
+<p>Response Failed - { "error": 1, "message": "You are not an admin." } </p>
+<br>
+
+<p><b>7. Vote Api</b></p>
+<p>http://dev.hr.excellencetechnologies.in:8000/vote/{poll_id}/{opt_id}</p>
+<p>Request Type - PUT</p>
+<p>Response - 
+{
+    "error": 0,
+    "data": {
+        "id": "1",
+        "title": "Default Poll",
+        "option_id": "1",
+        "option": "opt1",
+        "vote": 6
+    }
+}
+</p>
+<br>
+
+<p><b>8. Add Poll Option</b></p>
+<p>http://dev.hr.excellencetechnologies.in:8000/add_poll_option/{poll_id}</p>
+<p>Request Type - POST</p>
+<p>Response List - 
+{
+    "error": 0,
+    "data": {
+        "poll_id": "1",
+        "options": "optdemo",
+        "id": 13
+    }
+}
+</p>
+
+<p>Response Failed - { "error": 1, "message": "No polls found to add option." } </p>
 <br>
        
 

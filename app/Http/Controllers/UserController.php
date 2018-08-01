@@ -21,6 +21,7 @@ class UserController extends Controller
         $this->middleware('getUserRole', ['only' => 'listUsers', 'listPolls', 'listPoll']);
 
         $this->middleware('getUserId', ['only' => 'addPoll', 'addOption', 'deleteOption', 'updatePollTitle', 'deletePoll']);
+
     }
 
     // Add User
@@ -40,7 +41,7 @@ class UserController extends Controller
             $response = ['error' => 1, 'message' => $ex->getMessage()];
         }
 
-        return response()->json($response);
+        return response()->json($response)->header("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
         
     }
 
@@ -56,7 +57,7 @@ class UserController extends Controller
             $response = ['error' => 1, 'message' => $ex->getMessage()];
         }
         
-        return response()->json($response);
+        return response()->json($response)->header("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
     }
 
     // List Users
@@ -70,7 +71,7 @@ class UserController extends Controller
             $response = ['error' => 1, 'message' => $ex->getMessage()];
         }
 
-        return response()->json($response);
+        return response()->json($response)->header("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
     }
 
     // Add Poll
@@ -86,7 +87,7 @@ class UserController extends Controller
             $response = ['error' => 1, 'message' => $ex->getMessage()];
         }
         
-        return response()->json($response);
+        return response()->json($response)->header("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
     }
 
     // List Polls
@@ -100,7 +101,7 @@ class UserController extends Controller
             $response = ['error' => 1, 'message' => $ex->getMessage()];
         }
         
-        return response()->json($response);
+        return response()->json($response)->header("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
     }
     
     // List a Poll
@@ -114,7 +115,7 @@ class UserController extends Controller
             $response = ['error' => 1, 'message' => $ex->getMessage()];
         }
 
-        return response()->json($response);
+        return response()->json($response)->header("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
     }
 
     // Vote Api
@@ -128,7 +129,7 @@ class UserController extends Controller
             $response = ['error' => 1, 'message' => $ex->getMessage()];
         }
 
-        return response()->json($response);
+        return response()->json($response)->header("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
     }
 
     // Add Poll Option
@@ -145,7 +146,7 @@ class UserController extends Controller
             $response = ['error' => 1, 'message' => $ex->getMessage()];
         }
 
-        return response()->json($response);
+        return response()->json($response)->header("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
     }
 
     // Delete Poll Option
@@ -160,7 +161,7 @@ class UserController extends Controller
             $response = ['error' => 1, 'message' => $ex->getMessage()];
         }
 
-        return response()->json($response);
+        return response()->json($response)->header("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
     }
 
     // Update Poll Title
@@ -176,7 +177,7 @@ class UserController extends Controller
             $response = ['error' => 1, 'message' => $ex->getMessage()];
         }
 
-        return response()->json($response);
+        return response()->json($response)->header("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
     }
 
     // Delete Poll
@@ -191,6 +192,6 @@ class UserController extends Controller
             $response = ['error' => 1, 'message' => $ex->getMessage()];
         }
 
-        return response()->json($response);
+        return response()->json($response)->header("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers");
     }
 }
