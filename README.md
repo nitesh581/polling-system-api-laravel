@@ -7,14 +7,15 @@ For any issues contact @nitesh on slack
 <p><b>1. Add User</b></p>
 <p>http://dev.hr.excellencetechnologies.in:8000/add_user</p>
 <p>Request Type - POST</p>
-<p>Body - </p>
+<p>Body - 
 {
       "name": "Nitesh",
       "email": "nitesh@gmail.com",
       "password": "nitesh",
       "role": "admin",
 }
-<br>
+</p>
+
 <p>Response User Created - 
 {
   "error": 0,
@@ -77,7 +78,30 @@ For any issues contact @nitesh on slack
 <p><b>4. Add Poll</b></p>
 <p>http://dev.hr.excellencetechnologies.in:8000/add_poll</p>
 <p>Request Type - POST</p>
-<p>Response List - 
+<p>Body - 
+{
+      "title": "Dummy poll",
+      "options": [
+            {
+                "options": "demo1",
+                "vote": 0
+            },
+            {
+                "options": "demo2",
+                "vote": 0
+            },
+            {
+                "options": "demo3",
+                "vote": 0
+            },
+            {
+                "options": "demo4",
+                "vote": 0
+            }
+        ]
+}
+</p>
+<p>Response - 
 {
   "error": 0,
   "data": 
@@ -190,7 +214,7 @@ For any issues contact @nitesh on slack
 <p><b>6. List Single Poll</b></p>
 <p>http://dev.hr.excellencetechnologies.in:8000/list_poll/{poll_id}</p>
 <p>Request Type - GET</p>
-<p>Response List - 
+<p>Response - 
 {
     "error": 0,
     "data": {
@@ -241,6 +265,11 @@ For any issues contact @nitesh on slack
 <p><b>8. Add Poll Option</b></p>
 <p>http://dev.hr.excellencetechnologies.in:8000/add_poll_option/{poll_id}</p>
 <p>Request Type - POST</p>
+<p>Body - 
+{
+      "option": "optdemo"
+}
+</p>
 <p>Response - 
 {
     "error": 0,
@@ -271,15 +300,18 @@ For any issues contact @nitesh on slack
 <p><b>10. Update Poll Title</b></p>
 <p>http://dev.hr.excellencetechnologies.in:8000/update_poll_title/{poll_id}</p>
 <p>Request Type - PUT</p>
+<p>Body - 
+{
+      "title": "Nitesh Poll Demo"
+}
+</p>
 <p>Response - 
 {
     "error": 0,
     "data": {
         "id": 5,
         "user_id": 1,
-        "title": "Nitesh Poll Demo",
-        "created_at": "2018-08-01 06:28:55",
-        "updated_at": "2018-08-01 11:54:56"
+        "title": "Nitesh Poll Demo"
     }
 }
 </p>
