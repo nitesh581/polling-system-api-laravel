@@ -23,10 +23,10 @@ class GetUserRole
             $role = $admin[$i]->role;
         }        
         
-        if($role != 'admin'){
+        if(strtolower($role) != 'admin'){
             return response()->json(['error' => 1, 'message' => "You are not an admin."]);
         }
-
+        
         return $next($request);
     }
 }

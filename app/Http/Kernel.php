@@ -60,6 +60,5 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'getUserRole' => \App\Http\Middleware\GetUserRole::class,
         'getUserId' => \App\Http\Middleware\GetUserId::class,
-        'cors' => \Barryvdh\Cors\HandleCors::class,
     ];
 }

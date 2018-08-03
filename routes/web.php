@@ -31,7 +31,7 @@ Route::post('/add_poll', 'UserController@addPoll')->middleware('getUserId');
 Route::get('/list_polls', 'UserController@listPolls')->middleware('getUserRole');
 
 // List a Poll
-Route::get('/list_poll/{poll_id}', 'UserController@listPoll')->middleware('getUserRole');
+Route::get('/list_poll', 'UserController@listPoll')->middleware('getUserId');
 
 // Vote Api
 Route::put('/vote/{poll_id}/{opt_id}', 'UserController@doVote');

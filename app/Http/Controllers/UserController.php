@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Middleware\GetUserId;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\JsonResponse;
 
 
 class UserController extends Controller
@@ -80,6 +81,7 @@ class UserController extends Controller
         try {
             $user_id = request()->get('user_id');
             $data = request()->all();
+            
             $poll = new Poll();
             $response = ['error' => 0, 'data' => $poll->addPoll($user_id, $data)];
 
@@ -105,11 +107,12 @@ class UserController extends Controller
     }
     
     // List a Poll
-    public function listPoll($poll_id)
+    public function listPoll()
     {
         try {
+            $user_id = request()->get('user_id');
             $poll = new Poll();
-            $response = ['error' => 0, 'data' => $poll->listPoll($poll_id)];
+            $response = ['error' => 0, 'data' => $poll->listPoll($user_id)];
 
         } catch (Exception $ex) {
             $response = ['error' => 1, 'message' => $ex->getMessage()];

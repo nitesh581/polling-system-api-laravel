@@ -33,7 +33,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'created_at', 'updated_at'
     ];
 
     // Add User
@@ -56,7 +56,7 @@ class User extends Authenticatable
         if($user_count > 0){
             throw new Exception('User already exist.');
         }
-
+        
         $user = new User();
         $user->name = $data['name'];
         $user->email = $email;
