@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use DB;
 use Closure;
 
-class GetUserRole
+class IsAdmin
 {
     /**
      * Handle an incoming request.

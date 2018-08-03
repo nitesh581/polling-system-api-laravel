@@ -19,9 +19,9 @@ class UserController extends Controller
 {   
     public function __construct()
     {
-        $this->middleware('getUserRole', ['only' => 'listUsers', 'listPolls', 'listPoll']);
+        $this->middleware('isAdmin', ['only' => 'listUsers', 'listPolls']);
 
-        $this->middleware('getUserId', ['only' => 'addPoll', 'addOption', 'deleteOption', 'updatePollTitle', 'deletePoll']);
+        $this->middleware('getUserId', ['only' => 'addPoll', 'addOption', 'listPoll', 'deleteOption', 'deletePoll']);
 
     }
 
@@ -107,12 +107,12 @@ class UserController extends Controller
     }
     
     // List a Poll
-    public function listPoll()
+    public function listUserPoll()
     {
         try {
             $user_id = request()->get('user_id');
             $poll = new Poll();
-            $response = ['error' => 0, 'data' => $poll->listPoll($user_id)];
+            $response = ['error' => 0, 'data' => $poll->listUserPoll($user_id)];
 
         } catch (Exception $ex) {
             $response = ['error' => 1, 'message' => $ex->getMessage()];

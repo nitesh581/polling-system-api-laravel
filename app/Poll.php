@@ -26,11 +26,13 @@ class Poll extends Model
         $poll->title = $data['title'];
         $poll->save();
 
+        $no_vote = 0;
+
         for($i = 0; $i < $pollopt_length; $i++){
             $poll_opt = new PollOpt();
             $poll_opt->poll_id = $poll->id;
             $poll_opt->options = $data['options'][$i]['option'];
-            $poll_opt->vote = 0;
+            $poll_opt->vote = $no_vote;
             $poll_opt->save();
         }
         
@@ -70,7 +72,7 @@ class Poll extends Model
     }
 
     // List a Poll
-    public function listPoll($user_id)
+    public function listUserPoll($user_id)
     {       
         $poll = DB::table('polls')->select('id', 'title')->where('user_id', $user_id)->get();   
         
@@ -146,9 +148,15 @@ class Poll extends Model
             return response()->json(['error' => $validator->errors()]);
         }
         
-        $poll = DB::table('polls')->where('id', $poll_id)->where('user_id', $user_id)->count();
-        
-        if($poll < 1) {
+        $user = DB::table('users')->where('id', $user_id)->count();
+
+        if($user < 1) {
+            throw new Exception('You are not an authenticated user.');
+        }
+
+        $poll = DB::table('polls')->where('id', $poll_id)->count();
+
+        if($user < 1) {
             throw new Exception('No polls found to update.');
         }
 
@@ -165,10 +173,16 @@ class Poll extends Model
         if($poll_id == 0) {
             throw new Exception('Please provide a valid poll id.');
         }
-
-        $poll = DB::table('polls')->where('id', $poll_id)->where('user_id', $user_id)->count();
         
-        if($poll < 1) {
+        $user = DB::table('users')->where('id', $user_id)->count();
+
+        if($user < 1) {
+            throw new Exception('You are not an authenticated user.');
+        }
+
+        $poll = DB::table('polls')->where('id', $poll_id)->count();
+
+        if($user < 1) {
             throw new Exception('No polls found to delete.');
         }
 

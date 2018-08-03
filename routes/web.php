@@ -22,16 +22,16 @@ Route::post('/add_user', 'UserController@addUser');
 Route::post('/login', 'UserController@loginUser');
 
 // List All Users
-Route::get('/list_users', 'UserController@listUsers')->middleware('getUserRole');
+Route::get('/list_users', 'UserController@listUsers')->middleware('isAdmin');
 
 // Add Poll
 Route::post('/add_poll', 'UserController@addPoll')->middleware('getUserId');
 
 // List Polls
-Route::get('/list_polls', 'UserController@listPolls')->middleware('getUserRole');
+Route::get('/list_polls', 'UserController@listPolls')->middleware('isAdmin');
 
 // List a Poll
-Route::get('/list_poll', 'UserController@listPoll')->middleware('getUserId');
+Route::get('/list_poll', 'UserController@listUserPoll')->middleware('getUserId');
 
 // Vote Api
 Route::put('/vote/{poll_id}/{opt_id}', 'UserController@doVote');
