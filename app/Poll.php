@@ -26,11 +26,13 @@ class Poll extends Model
         $poll->title = $data['title'];
         $poll->save();
 
+        $no_vote = 0;
+
         for($i = 0; $i < $pollopt_length; $i++){
             $poll_opt = new PollOpt();
             $poll_opt->poll_id = $poll->id;
             $poll_opt->options = $data['options'][$i]['option'];
-            $poll_opt->vote = $data['options'][$i]['vote'];
+            $poll_opt->vote = $no_vote;
             $poll_opt->save();
         }
         
@@ -46,7 +48,7 @@ class Poll extends Model
     }
 
     // List Polls
-    public function listPolls()
+    public function listAllPolls()
     {
         $polls_count = DB::table('polls')->count();
         
@@ -57,7 +59,7 @@ class Poll extends Model
         $polls = DB::table('polls')->select('id', 'title')->get();         
         
         for($i = 0; $i < count($polls); $i++){
-            $poll_opts = DB::table('poll_opts')->select('options', 'vote')->where('poll_id', $polls[$i]->id)->get();
+            $poll_opts = DB::table('poll_opts')->select('id as opt_id', 'options', 'vote')->where('poll_id', $polls[$i]->id)->get();
 
             $polls_list[] = [
                 'id' => $polls[$i]->id,
@@ -70,30 +72,22 @@ class Poll extends Model
     }
 
     // List a Poll
-    public function listPoll($poll_id)
-    {
-        if($poll_id == 0) {
-            throw new Exception('Please provide a valid poll id.');
+    public function listUserPoll($user_id)
+    {       
+        $poll = DB::table('polls')->select('id', 'title')->where('user_id', $user_id)->get();   
+        
+        if(count($poll) < 1){
+            throw new Exception('No Polls found to show.');
         }
         
-        $poll_count = DB::table('polls')->where('id', $poll_id)->count();
-        if($poll_count < 1){
-            throw new Exception('No Records Found.');
+        for($i = 0; $i < count($poll); $i++){
+            $poll_opts = DB::table('poll_opts')->select('id as opt_id', 'options', 'vote')->where('poll_id', $poll[$i]->id)->get();
+            $list_poll[] = array(
+                'id' => $poll[$i]->id,
+                'title' => $poll[$i]->title,
+                'options' => $poll_opts
+            );
         }
-
-        $poll = DB::table('polls')->select('id', 'title')->where('id', $poll_id)->get();
-        $poll_opts = DB::table('poll_opts')->select('options', 'vote')->where('poll_id', $poll_id)->get();
-
-        for($i = 0; $i < $poll_count; $i++){
-            $poll_id = $poll[$i]->id;
-            $poll_title = $poll[$i]->title;
-        }
-
-        $list_poll = array(
-            'id' => $poll_id,
-            'title' => $poll_title,
-            'options' => $poll_opts
-        );
 
         return $list_poll;
     }
@@ -154,9 +148,15 @@ class Poll extends Model
             return response()->json(['error' => $validator->errors()]);
         }
         
-        $poll = DB::table('polls')->where('id', $poll_id)->where('user_id', $user_id)->count();
-        
-        if($poll < 1) {
+        $user = DB::table('users')->where('id', $user_id)->count();
+
+        if($user < 1) {
+            throw new Exception('You are not an authenticated user.');
+        }
+
+        $poll = DB::table('polls')->where('id', $poll_id)->count();
+
+        if($user < 1) {
             throw new Exception('No polls found to update.');
         }
 
@@ -173,10 +173,16 @@ class Poll extends Model
         if($poll_id == 0) {
             throw new Exception('Please provide a valid poll id.');
         }
-
-        $poll = DB::table('polls')->where('id', $poll_id)->where('user_id', $user_id)->count();
         
-        if($poll < 1) {
+        $user = DB::table('users')->where('id', $user_id)->count();
+
+        if($user < 1) {
+            throw new Exception('You are not an authenticated user.');
+        }
+
+        $poll = DB::table('polls')->where('id', $poll_id)->count();
+
+        if($user < 1) {
             throw new Exception('No polls found to delete.');
         }
 
@@ -214,7 +220,5 @@ class Poll extends Model
 
         $poll = new Poll();
         $poll->addPoll($user_id, $default);
-
-        return $poll;
     }
 }

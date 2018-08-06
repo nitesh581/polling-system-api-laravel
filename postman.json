@@ -1,0 +1,269 @@
+{
+	"variables": [],
+	"info": {
+		"name": "poll_api",
+		"_postman_id": "9e6d38aa-b780-7239-53b1-d9db45dd1e5c",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "add_user",
+			"request": {
+				"url": "{{url}}/add_user",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\":\"{{name}}\",\n\t\"email\":\"{{email}}\",\n\t\"password\":\"{{password}}\",\n\t\"role\":\"{{role}}\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"if (jsonData.data.api_token) {",
+							"    postman.setEnvironmentVariable(\"token\", jsonData.data.api_token);  ",
+							"} "
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "{{url}}/login",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "email",
+							"value": "{{email}}",
+							"description": "",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "list_users",
+			"request": {
+				"url": "{{url}}/list_users",
+				"method": "GET",
+				"header": [
+					{
+						"key": "api_token",
+						"value": "{{token}}",
+						"description": ""
+					},
+					{
+						"key": "",
+						"value": "",
+						"description": "",
+						"disabled": true
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "add_poll",
+			"request": {
+				"url": "{{url}}/add_poll",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "api_token",
+						"value": "{{token}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"title\":\"Dummy poll\",\"options\":[{\"option\":\"demo2\",\"vote\":0},{\"option\":\"demo2\",\"vote\":0},{\"option\":\"demo3\",\"vote\":0},{\"option\":\"demo4\",\"vote\":0}]}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "list_polls",
+			"request": {
+				"url": "{{url}}/list_polls",
+				"method": "GET",
+				"header": [
+					{
+						"key": "api_token",
+						"value": "{{token}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "list_poll",
+			"request": {
+				"url": "{{url}}/list_poll",
+				"method": "GET",
+				"header": [
+					{
+						"key": "api_token",
+						"value": "{{token}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "vote",
+			"request": {
+				"url": "{{url}}/vote/{{poll_id}}/{{opt_id}}",
+				"method": "PUT",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "add_poll_option",
+			"request": {
+				"url": "{{url}}/add_poll_option/{{poll_id}}",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					},
+					{
+						"key": "api_token",
+						"value": "{{token}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "option",
+							"value": "{{add_option}}",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "delete_poll_option",
+			"request": {
+				"url": "{{url}}/delete_poll_option/{{poll_id}}/{{opt_id}}",
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "api_token",
+						"value": "{{token}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "update_poll_title",
+			"request": {
+				"url": "{{url}}/update_poll_title/{{poll_id}}",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					},
+					{
+						"key": "api_token",
+						"value": "{{token}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "title",
+							"value": "{{update_poll_title}}",
+							"description": "",
+							"type": "text"
+						}
+					]
+				},
+				"description": null
+			},
+			"response": []
+		},
+		{
+			"name": "delete_poll",
+			"request": {
+				"url": "{{url}}/delete_poll/{{poll_id}}",
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "api_token",
+						"value": "{{token}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": null
+			},
+			"response": []
+		}
+	]
+}
