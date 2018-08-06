@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use DB;
 use Closure;
 
-class GetUserId
+class GetUser
 {
     /**
      * Handle an incoming request.
@@ -25,9 +25,10 @@ class GetUserId
 
         for($i = 0; $i < count($user); $i++){
             $user_id = $user[$i]->id;
+            $role = $user[$i]->role;
         }
 
-        $request->attributes->add(['user_id' => $user_id]); 
+        $request->attributes->add(['user_id' => $user_id, 'user_role' => $role]); 
         return $next($request);
     }
 }

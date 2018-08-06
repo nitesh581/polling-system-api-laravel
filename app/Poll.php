@@ -48,7 +48,7 @@ class Poll extends Model
     }
 
     // List Polls
-    public function listPolls()
+    public function listAllPolls()
     {
         $polls_count = DB::table('polls')->count();
         
@@ -59,7 +59,7 @@ class Poll extends Model
         $polls = DB::table('polls')->select('id', 'title')->get();         
         
         for($i = 0; $i < count($polls); $i++){
-            $poll_opts = DB::table('poll_opts')->select('options', 'vote')->where('poll_id', $polls[$i]->id)->get();
+            $poll_opts = DB::table('poll_opts')->select('id as opt_id', 'options', 'vote')->where('poll_id', $polls[$i]->id)->get();
 
             $polls_list[] = [
                 'id' => $polls[$i]->id,
@@ -81,7 +81,7 @@ class Poll extends Model
         }
         
         for($i = 0; $i < count($poll); $i++){
-            $poll_opts = DB::table('poll_opts')->select('options', 'vote')->where('poll_id', $poll[$i]->id)->get();
+            $poll_opts = DB::table('poll_opts')->select('id as opt_id', 'options', 'vote')->where('poll_id', $poll[$i]->id)->get();
             $list_poll[] = array(
                 'id' => $poll[$i]->id,
                 'title' => $poll[$i]->title,
