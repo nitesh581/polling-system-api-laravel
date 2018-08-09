@@ -35,10 +35,10 @@ class PollOpt extends Model
 
         $no_vote = 0;
 
-        for($i = 0; $i < count(data['options']); $i++){
+        for($i = 0; $i < count($data['options']); $i++){
             $poll_opt = new PollOpt();
             $poll_opt->poll_id = $poll_id;
-            $poll_opt->options = $data['option'];
+            $poll_opt->options = $data['options'][$i]['option'];
             $poll_opt->vote = $no_vote;
             $poll_opt->save();
             $poll_options[] = $poll_opt;
