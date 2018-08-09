@@ -16,6 +16,10 @@ class Poll extends Model
 {
     protected $table = 'polls';
 
+    protected $hidden = [
+        'created_at', 'updated_at'
+    ];
+
     // Add Poll
     public function addPoll($user_id, $data)
     {
