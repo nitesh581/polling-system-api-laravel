@@ -16,20 +16,16 @@ class PollOpt extends Model
 {
     protected $table = 'poll_opts';
 
+    protected $hidden = [
+        'created_at', 'updated_at'
+    ];
+
     // Add Poll Option
     public function addOption($poll_id, $data)
     {
         if($poll_id == 0) {
             throw new Exception('Please provide a valid poll id.');
-        }
-
-        $validator = Validator::make($data, [
-            'option' => 'required'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()]);
-        }      
+        }     
         
         $poll_count = DB::table('polls')->where('id', $poll_id)->count();
 
@@ -39,13 +35,16 @@ class PollOpt extends Model
 
         $no_vote = 0;
 
-        $poll_opt = new PollOpt();
-        $poll_opt->poll_id = $poll_id;
-        $poll_opt->options = $data['option'];
-        $poll_opt->vote = $no_vote;
-        $poll_opt->save();
+        for($i = 0; $i < count(data['options']); $i++){
+            $poll_opt = new PollOpt();
+            $poll_opt->poll_id = $poll_id;
+            $poll_opt->options = $data['option'];
+            $poll_opt->vote = $no_vote;
+            $poll_opt->save();
+            $poll_options[] = $poll_opt;
+        }        
 
-        return $poll_opt;
+        return $poll_options;
     }
 
     // Delete Poll Option
